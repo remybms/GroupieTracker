@@ -22,8 +22,8 @@ type artists struct {
 
 var artistsData []artists
 
-func main() {
-	fmt.Println("http://localhost:8080")
+func artist() {
+
 	url := "https://groupietrackers.herokuapp.com/api/artists"
 	req, _ := http.NewRequest("GET", url, nil)
 	res, _ := http.DefaultClient.Do(req)
@@ -35,10 +35,12 @@ func main() {
 		fmt.Println("Error :", err)
 		return
 	}
-	fmt.Println(artistsData)
 }
 
-func server() {
+func main() {
+	fmt.Println("http://localhost:8080")
+	artist()
+	fmt.Println(artistsData)
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Hello!")
 	})
