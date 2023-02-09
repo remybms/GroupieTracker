@@ -49,10 +49,7 @@ func main() {
 	fmt.Println("http://localhost:8080")
 	artist()
 	fmt.Println(artistsData)
-	http.HandleFunc("/artist", artistHandler)
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello!")
-	})
+	http.HandleFunc("/", artistHandler)
 
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
