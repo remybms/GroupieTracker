@@ -39,7 +39,7 @@ func artist() {
 }
 
 func artistHandler(w http.ResponseWriter, r *http.Request) {
-	t, _ := template.ParseFiles("static/artist.html")
+	t, _ := template.ParseFiles("./static/artist.html")
 	t.Execute(w, artistsData)
 }
 
