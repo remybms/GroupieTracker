@@ -43,7 +43,11 @@ func artist() {
 }
 
 func artistHandler(w http.ResponseWriter, r *http.Request) {
-	t, _ := template.ParseFiles("../static/html/Home.html")
+	t, err := template.ParseFiles("./static/html/Home.html")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	t.Execute(w, artistsData)
 
 }
