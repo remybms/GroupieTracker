@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -18,14 +19,6 @@ type artists struct {
 	Location     string   `json:"location"`
 	ConcertDates string   `json:"concertDates"`
 	Relations    string   `json:"relations"`
-}
-type dateRelation struct {
-	Id            string
-	DatesLocation date
-}
-type date struct {
-	Lieu string
-	Date []string
 }
 
 var artistsData []artists
@@ -45,10 +38,16 @@ func artist() {
 	}
 }
 
+func artistHandler(w http.ResponseWriter, r *http.Request) {
+	t, _ := template.ParseFiles("static/artist.html")
+	t.Execute(w, artistsData)
+}
+
 func main() {
 	fmt.Println("http://localhost:8080")
 	artist()
 	fmt.Println(artistsData)
+	http.HandleFunc("/artist", artistHandler)
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Hello!")
 	})
