@@ -56,21 +56,23 @@ a{
 body{
     background-color: #3F0579;
 }
+
+/* Carte API */
 .home-left{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 5px;
-    /* height: 100vh; */
-    /* width: 35%; */
+    gap: 50px;
+    height: 100vh; 
+    width: 25%;
 } 
 .home-left-block{
-    margin-left: 50px;
-    width: 300px;
-    height: 400px;
-    background-color: #E0BBE4;
+    margin-left: 20px;
+    width: 200px;
+    height: 300px;
+    background-color: #ffffff;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -79,15 +81,15 @@ body{
     border: solid 4px #000;
 }
 .home-left-block h1{
-    font-size: 30px;
+    font-size: 20px;
     font-weight: 600;
     color: #000;
     margin: 20px 0px 0px 0px;
     text-align: center;
 }
 .home-left-block img{
-    width: 200px;
-    height: 200px;
-    border-radius: 10%;
-    border: solid 4px #000;
+    width: 100px;
+    height: 100px;
+    border-radius: 15%;
+    border: solid 3px #000;
 }
