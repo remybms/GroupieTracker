@@ -19,6 +19,14 @@ type artists struct {
 	ConcertDates string   `json:"concertDates"`
 	Relations    string   `json:"relations"`
 }
+type dateRelation struct {
+	Id            string
+	DatesLocation date
+}
+type date struct {
+	Lieu string
+	Date []string
+}
 
 var artistsData []artists
 
