@@ -28,10 +28,10 @@ func artist() {
 	url := "https://groupietrackers.herokuapp.com/api/artists"
 	req, _ := http.NewRequest("GET", url, nil)
 	res, _ := http.DefaultClient.Do(req)
-	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
 	//fmt.Println(string(body))
 	err := json.Unmarshal([]byte(body), &artistsData)
+	defer res.Body.Close()
 	if err != nil {
 		fmt.Println("Error :", err)
 		return
@@ -40,7 +40,9 @@ func artist() {
 
 func artistHandler(w http.ResponseWriter, r *http.Request) {
 	t, _ := template.ParseFiles("./static/artist.html")
-	t.Execute(w, artistsData)
+	for index := range artistsData {
+		t.Execute(w, artistsData[index])
+	}
 }
 
 func main() {
