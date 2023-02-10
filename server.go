@@ -25,12 +25,7 @@ type artistsArray struct {
 	Array []artists
 }
 
-type artist struct {
-	artist artists
-}
-
 var artistsData artistsArray
-var artistData artist
 
 func Artists() {
 
@@ -40,22 +35,6 @@ func Artists() {
 	body, _ := ioutil.ReadAll(res.Body)
 	//fmt.Println(string(body))
 	err := json.Unmarshal([]byte(body), &artistsData.Array)
-
-	if err != nil {
-		fmt.Println("Error :", err)
-		return
-	}
-	defer res.Body.Close()
-}
-
-func Artist() {
-
-	url := "https://groupietrackers.herokuapp.com/api/artists"
-	req, _ := http.NewRequest("GET", url, nil)
-	res, _ := http.DefaultClient.Do(req)
-	body, _ := ioutil.ReadAll(res.Body)
-	//fmt.Println(string(body))
-	err := json.Unmarshal([]byte(body), &artistData)
 
 	if err != nil {
 		fmt.Println("Error :", err)
