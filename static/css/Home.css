@@ -79,7 +79,7 @@ body{
     border-radius: 20px;
     border: solid 4px #000;
 }
-.home-left-block h1{
+.name{
     
     font-size: 20px;
     font-weight: 600;
@@ -87,7 +87,7 @@ body{
     margin: 20px 0px 0px 0px;
     text-align: center;
 }
-.home-left-block img{
+.img{
     width: 150px;
     height: 160px;
     border-radius: 15%;
