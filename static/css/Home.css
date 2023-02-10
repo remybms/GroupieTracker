@@ -7,7 +7,7 @@ img {
     height : 60px;
     }
 .header{
-    background-color:#190131;;
+    background-color:#110131;;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -54,14 +54,15 @@ a{
     }
 }
 body{
-    background-color: #3F0579;
+    background-color: #1e0579;
 }
 
 /* Carte API */
 .home-left{
-    margin-left: 30px;
-    display: flex;
-    justify-content: baseline;
+    padding: 30px;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto ;
+    margin-left: 0px;
     align-items:center;
     gap: 50px;
     height: 50vh; 
