@@ -77,7 +77,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 func artistHandler(w http.ResponseWriter, r *http.Request) {
 	indexString := r.FormValue("card")
 	index, _ := strconv.Atoi(indexString)
-	t, err := template.ParseFiles("./static/html/artist.html")
+	t, err := template.ParseFiles("./static/html/Artist.html")
 	if err != nil {
 		fmt.Println(err)
 		return
