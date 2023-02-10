@@ -20,8 +20,11 @@ type artists struct {
 	ConcertDates string   `json:"concertDates"`
 	Relations    string   `json:"relations"`
 }
+type Artists struct {
+	Array []artists
+}
 
-var artistsData []artists
+var artistsData Artists
 
 func artist() {
 
@@ -30,30 +33,30 @@ func artist() {
 	res, _ := http.DefaultClient.Do(req)
 	body, _ := ioutil.ReadAll(res.Body)
 	//fmt.Println(string(body))
-	err := json.Unmarshal([]byte(body), &artistsData)
-	defer res.Body.Close()
+	err := json.Unmarshal([]byte(body), &artistsData.Array)
+
 	if err != nil {
 		fmt.Println("Error :", err)
 		return
 	}
+	defer res.Body.Close()
 }
 
 func artistHandler(w http.ResponseWriter, r *http.Request) {
-	t, _ := template.ParseFiles("./static/artist.html")
-	for index := range artistsData {
-		t.Execute(w, artistsData[index])
+	t, err := template.ParseFiles("./static/html/Home.html")
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
+	t.Execute(w, artistsData)
+
 }
 
 func main() {
 	fmt.Println("http://localhost:8080")
 	artist()
-	fmt.Println(artistsData)
-	http.HandleFunc("/artist", artistHandler)
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello!")
-	})
-
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	http.HandleFunc("/", artistHandler)
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}
