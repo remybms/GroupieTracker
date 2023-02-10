@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 type artists struct {
@@ -20,13 +21,18 @@ type artists struct {
 	ConcertDates string   `json:"concertDates"`
 	Relations    string   `json:"relations"`
 }
-type Artists struct {
+type artistsArray struct {
 	Array []artists
 }
 
-var artistsData Artists
+type artist struct {
+	artist artists
+}
 
-func artist() {
+var artistsData artistsArray
+var artistData artist
+
+func Artists() {
 
 	url := "https://groupietrackers.herokuapp.com/api/artists"
 	req, _ := http.NewRequest("GET", url, nil)
@@ -42,7 +48,23 @@ func artist() {
 	defer res.Body.Close()
 }
 
-func artistHandler(w http.ResponseWriter, r *http.Request) {
+func Artist() {
+
+	url := "https://groupietrackers.herokuapp.com/api/artists"
+	req, _ := http.NewRequest("GET", url, nil)
+	res, _ := http.DefaultClient.Do(req)
+	body, _ := ioutil.ReadAll(res.Body)
+	//fmt.Println(string(body))
+	err := json.Unmarshal([]byte(body), &artistData)
+
+	if err != nil {
+		fmt.Println("Error :", err)
+		return
+	}
+	defer res.Body.Close()
+}
+
+func homeHandler(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("./static/html/Home.html")
 	if err != nil {
 		fmt.Println(err)
@@ -52,11 +74,24 @@ func artistHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func artistHandler(w http.ResponseWriter, r *http.Request) {
+	indexString := r.FormValue("card")
+	index, _ := strconv.Atoi(indexString)
+	t, err := template.ParseFiles("./static/html/artist.html")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	t.Execute(w, artistsData.Array[index-1])
+
+}
+
 func main() {
 	fmt.Println("http://localhost:8080")
-	artist()
+	Artists()
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	http.HandleFunc("/", artistHandler)
+	http.HandleFunc("/", homeHandler)
+	http.HandleFunc("/artist", artistHandler)
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}

@@ -14,7 +14,7 @@
         <section>
             <div class="header">
                 <div class="header-left">
-                    <a class="active" href="Home.html"><img
+                    <a class="active" href="/"><img
                             src="https://tracedat.com/wp-content/uploads/2020/11/home-300x300.png"></img></a>
                 </div>
                 <div class="header-right">
@@ -29,10 +29,12 @@
     
     <div class="home-left">
         {{range .Array}}
-        <div class="home-left-block">
-            <img class="img" src="{{.Image}}" alt="" />
-            <div class="name">{{.Name}}</div>
-        </div>
+        <form action="artist" method="post"> 
+            <button type="submit" value="{{.Id}}" name="card" class="home-left-block">
+                <img class="img" src="{{.Image}}" alt="" />
+                <div class="name">{{.Name}}</div>
+            </button>
+        </form>
         {{end}}
     </div>
     
