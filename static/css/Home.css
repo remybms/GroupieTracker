@@ -3,9 +3,7 @@
     padding: 0;
 }
 body{
-    position: fixed;
     height: 100%;
-    width: 100%;
     background-color:#1e0579;
 }
 img {
@@ -67,7 +65,7 @@ a{
     display: grid;
     grid-template-columns: auto auto auto auto auto ;
     align-items:center;
-    gap: 10%;
+    gap: 6%;
     height: 50vh; 
     width: 25%;
 } 

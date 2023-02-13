@@ -53,6 +53,21 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func searchHandler(w http.ResponseWriter, r *http.Request) {
+	indexString := r.FormValue("research")
+	fmt.Println(indexString)
+	t, err := template.ParseFiles("./static/html/Artist.html")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	for ind, value := range artistsData.Array {
+		if value.Name == indexString {
+			t.Execute(w, artistsData.Array[ind])
+		}
+	}
+}
+
 func artistHandler(w http.ResponseWriter, r *http.Request) {
 	indexString := r.FormValue("card")
 	index, _ := strconv.Atoi(indexString)
@@ -71,6 +86,7 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/artist", artistHandler)
+	http.HandleFunc("/search", searchHandler)
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}
