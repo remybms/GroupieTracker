@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 type artists struct {
@@ -62,7 +63,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	for ind, value := range artistsData.Array {
-		if value.Name == indexString {
+		if strings.ToLower(value.Name) == strings.ToLower(indexString) {
 			t.Execute(w, artistsData.Array[ind])
 		}
 	}
