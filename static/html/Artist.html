@@ -31,7 +31,11 @@
     <div class="CreationDate">Creation du groupe {{.CreationDate}}</div>
     <div class="FirstAlbum">Premier album sortie en : {{.FirstAlbum}}</div>
     <div class="Location">Prochain concert à : {{.Location}}</div>
-    <a href="/concerts">Concerts en approche</a>
+    <form action="concert" method="post"> 
+        <button type="submit" value="{{.Id}}" name="dates" class="home-left-block">
+            <div class="test">Concerts en approche</div>
+        </button>
+    </form>
     <!-- <div class="ConcertDates">Date du prochain concert : {{.ConcertDates}}</div> -->
     <!-- <div class="Relations">Relation {{.Relations}}</div> -->
 </div>

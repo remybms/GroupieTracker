@@ -161,14 +161,14 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func concertHandler(w http.ResponseWriter, r *http.Request) {
-	indexString := r.FormValue("card")
+	indexString := r.FormValue("dates")
 	index, _ := strconv.Atoi(indexString)
 	t, err := template.ParseFiles("./static/html/concert.html")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	t.Execute(w, concertsData.Relation.Index[index])
+	t.Execute(w, concertsData.Relation.Index[index-1])
 
 }
 
@@ -191,7 +191,7 @@ func main() {
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/artist", artistHandler)
 	http.HandleFunc("/search", searchHandler)
-	http.HandleFunc("/concerts", concertHandler)
+	http.HandleFunc("/concert", concertHandler)
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}
