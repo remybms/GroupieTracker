@@ -21,11 +21,51 @@ type artists struct {
 	ConcertDates string   `json:"concertDates"`
 	Relations    string   `json:"relations"`
 }
+
+type relation struct {
+	Id             int
+	DatesLocations relationDates
+}
+
+type locations struct {
+	Id        int
+	Locations []string
+	Dates     string
+}
+
+type dates struct {
+	Id    int
+	Dates []string
+}
+
+type relationDates struct {
+	DatesToLocations []string
+}
+
+type ExtractDate struct {
+	Index []dates `json:"index"`
+}
+
+type ExtractLocation struct {
+	Index []locations `json:"index"`
+}
+
+type ExtractRelation struct {
+	Index []relation `json:"index"`
+}
+
 type artistsArray struct {
 	Array []artists
 }
 
+type concerts struct {
+	Relation  ExtractRelation
+	Locations ExtractLocation
+	Dates     ExtractDate
+}
+
 var artistsData artistsArray
+var concertsData concerts
 
 func Artists() {
 
@@ -41,6 +81,61 @@ func Artists() {
 		return
 	}
 	defer res.Body.Close()
+}
+
+func Relation() {
+
+	url := "https://groupietrackers.herokuapp.com/api/relation"
+	req, _ := http.NewRequest("GET", url, nil)
+	res, _ := http.DefaultClient.Do(req)
+	body, _ := ioutil.ReadAll(res.Body)
+	//fmt.Println(string(body))
+	err := json.Unmarshal([]byte(body), &concertsData.Relation)
+
+	if err != nil {
+		fmt.Println("Error :", err)
+		return
+	}
+	defer res.Body.Close()
+}
+
+func Locations() {
+
+	url := "https://groupietrackers.herokuapp.com/api/locations"
+	req, _ := http.NewRequest("GET", url, nil)
+	res, _ := http.DefaultClient.Do(req)
+	body, _ := ioutil.ReadAll(res.Body)
+	//fmt.Println(string(body))
+	err := json.Unmarshal([]byte(body), &concertsData.Locations)
+
+	if err != nil {
+		fmt.Println("Error :", err)
+		return
+	}
+	defer res.Body.Close()
+}
+
+func Dates() {
+
+	url := "https://groupietrackers.herokuapp.com/api/dates"
+	req, _ := http.NewRequest("GET", url, nil)
+	res, _ := http.DefaultClient.Do(req)
+	body, _ := ioutil.ReadAll(res.Body)
+	//fmt.Println(string(body))
+	err := json.Unmarshal([]byte(body), &concertsData.Dates)
+
+	if err != nil {
+		fmt.Println("Error :", err)
+		return
+	}
+	defer res.Body.Close()
+}
+
+func feedData() {
+	Artists()
+	Relation()
+	Locations()
+	Dates()
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
@@ -67,7 +162,8 @@ func artistHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	fmt.Println("http://localhost:8080")
-	Artists()
+	feedData()
+	fmt.Println(concertsData)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/artist", artistHandler)
