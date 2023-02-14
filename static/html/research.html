@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="http://localhost:8080/static/css/Home.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groupie Tracker</title>
+</head>
+
+<body>
+    <p>Bonjour</p>
+    {{if .Flag}}
+    <p>dans le boule</p>
+        {{range .Valid}}
+        <form action="artist" method="post"> 
+            <button type="submit" value="{{.Id}}" name="card" class="home-left-block">
+                <img class="img" src="{{.Image}}" alt="" />
+                <div class="name">{{.Name}}</div>
+            </button>
+        </form>
+        {{end}}
+    {{else}}
+        <form action="artist" method="post"> 
+            <p>Rien</p>
+        </form>
+    {{end}}
+
+</body>
+
+</html>

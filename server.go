@@ -23,7 +23,10 @@ type artists struct {
 	Relations    string   `json:"relations"`
 }
 type artistsArray struct {
+	*artists
 	Array []artists
+	Valid []artists
+	Flag  bool
 }
 
 var artistsData artistsArray
@@ -55,18 +58,26 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func searchHandler(w http.ResponseWriter, r *http.Request) {
+	var ValidArtistArray artistsArray
+	ValidArtistArray.artists = &artistsData.Array[0]
 	indexString := r.FormValue("research")
+	ValidArtistArray.Flag = false
 	fmt.Println(indexString)
-	t, err := template.ParseFiles("./static/html/Artist.html")
+	t, err := template.ParseFiles("./static/html/Research.html")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	for ind, value := range artistsData.Array {
-		if strings.ToLower(value.Name) == strings.ToLower(indexString) {
-			t.Execute(w, artistsData.Array[ind])
+	for _, value := range artistsData.Array {
+		val := strings.ToLower(value.Name)
+		str := strings.ToLower(indexString)
+		if strings.Contains(val, str) {
+			ValidArtistArray.Valid = append(ValidArtistArray.Valid, value)
+			ValidArtistArray.Flag = true
 		}
 	}
+	t.Execute(w, ValidArtistArray)
+	fmt.Println(ValidArtistArray.Valid)
 }
 
 func artistHandler(w http.ResponseWriter, r *http.Request) {
