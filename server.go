@@ -58,10 +58,9 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func searchHandler(w http.ResponseWriter, r *http.Request) {
-	var ValidArtistArray artistsArray
-	ValidArtistArray.artists = &artistsData.Array[0]
+	artistsData.artists = &artistsData.Array[0]
 	indexString := r.FormValue("research")
-	ValidArtistArray.Flag = false
+	artistsData.Flag = false
 	fmt.Println(indexString)
 	t, err := template.ParseFiles("./static/html/Research.html")
 	if err != nil {
@@ -72,12 +71,12 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		val := strings.ToLower(value.Name)
 		str := strings.ToLower(indexString)
 		if strings.Contains(val, str) {
-			ValidArtistArray.Valid = append(ValidArtistArray.Valid, value)
-			ValidArtistArray.Flag = true
+			artistsData.Valid = append(artistsData.Valid, value)
+			artistsData.Flag = true
 		}
 	}
-	t.Execute(w, ValidArtistArray)
-	fmt.Println(ValidArtistArray.Valid)
+	t.Execute(w, artistsData)
+	fmt.Println(artistsData.Valid)
 }
 
 func artistHandler(w http.ResponseWriter, r *http.Request) {
