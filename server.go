@@ -25,7 +25,7 @@ type artists struct {
 
 type relation struct {
 	Id             int
-	DatesLocations relationDates
+	DatesLocations map[string][]string
 }
 
 type locations struct {
@@ -37,10 +37,6 @@ type locations struct {
 type dates struct {
 	Id    int
 	Dates []string
-}
-
-type relationDates struct {
-	DatesToLocations []string
 }
 
 type ExtractDate struct {
@@ -164,6 +160,18 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func concertHandler(w http.ResponseWriter, r *http.Request) {
+	indexString := r.FormValue("card")
+	index, _ := strconv.Atoi(indexString)
+	t, err := template.ParseFiles("./static/html/concert.html")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	t.Execute(w, concertsData.Relation.Index[index])
+
+}
+
 func artistHandler(w http.ResponseWriter, r *http.Request) {
 	indexString := r.FormValue("card")
 	index, _ := strconv.Atoi(indexString)
@@ -179,11 +187,11 @@ func artistHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	fmt.Println("http://localhost:8080")
 	feedData()
-	fmt.Println(concertsData)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/artist", artistHandler)
 	http.HandleFunc("/search", searchHandler)
+	http.HandleFunc("/concerts", concertHandler)
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}
