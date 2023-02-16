@@ -3,6 +3,7 @@
     padding: 0;
 }
 body{
+    height: 100%;
     background-color:#1e0579;
 }
 img {
@@ -60,12 +61,11 @@ a{
 
 /* Carte API */
 .home-left{
-    padding: 30px;
+    padding: 1%;
     display: grid;
     grid-template-columns: auto auto auto auto auto ;
-    margin-left: 0px;
     align-items:center;
-    gap: 50px;
+    gap: 40px;
     height: 50vh; 
     width: 25%;
 } 

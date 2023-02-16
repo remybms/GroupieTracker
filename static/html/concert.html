@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="http://localhost:8080/static/css/Home.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Groupie Tracker</title>
-</head>
+    <link rel="stylesheet" href="http://localhost:8080/static/css/Concert.css">
 
+    <title>groupie tracker</title>
+</head>
 <body>
     <div class="header">
         <section>
@@ -19,26 +18,18 @@
                 </div>
                 <div class="header-right">
                     <h1 class="h1-header">Groupie Tracker</h1>
-                    <form action="/search" method="get">
-                        <input type="text" name="search"/>
-                        <input type="submit" value="Search">
-                    </form>
                 </div>
             </div>
         </section>
     </div>
     
-    <div class="home-left">
-        {{range .Array}}
-        <form action="artist" method="post"> 
-            <button type="submit" value="{{.Id}}" name="card" class="home-left-block">
-                <img class="img" src="{{.Image}}" alt="" />
-                <div class="name">{{.Name}}</div>
-            </button>
-        </form>
+    <div class="test">
+        {{range $index, $location := .Location}}
+        {{$location}} :
+        {{range $dates := index $.Dates $index}}
+            {{$dates}}
+        {{end}}
         {{end}}
     </div>
-
 </body>
-
 </html>

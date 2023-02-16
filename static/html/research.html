@@ -19,17 +19,16 @@
                 </div>
                 <div class="header-right">
                     <h1 class="h1-header">Groupie Tracker</h1>
-                    <form action="/search" method="get">
-                        <input type="text" name="search"/>
-                        <input type="submit" value="Search">
+                    <form action="/search">
+                        <input id="search-header" type="text" name="research" placeholder="rechercher.." />
                     </form>
                 </div>
             </div>
         </section>
     </div>
-    
+    {{if .Flag}}
     <div class="home-left">
-        {{range .Array}}
+        {{range .Valid}}
         <form action="artist" method="post"> 
             <button type="submit" value="{{.Id}}" name="card" class="home-left-block">
                 <img class="img" src="{{.Image}}" alt="" />
@@ -38,6 +37,11 @@
         </form>
         {{end}}
     </div>
+    {{else}}
+        <form action="artist" method="post"> 
+            <p>L'artiste que vous cherchez n'existe pas !!</p>
+        </form>
+    {{end}}
 
 </body>
 
