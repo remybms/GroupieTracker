@@ -57,7 +57,10 @@ type ExtractRelation struct {
 }
 
 type artistsArray struct {
+	*artists
 	Array []artists
+	Valid []artists
+	Flag  bool
 }
 
 type concerts struct {
@@ -151,18 +154,25 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func searchHandler(w http.ResponseWriter, r *http.Request) {
+	artistsData.artists = &artistsData.Array[0]
 	indexString := r.FormValue("research")
+	artistsData.Valid = []artists{}
+	artistsData.Flag = false
 	fmt.Println(indexString)
-	t, err := template.ParseFiles("./static/html/Artist.html")
+	t, err := template.ParseFiles("./static/html/Research.html")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	for ind, value := range artistsData.Array {
-		if strings.ToLower(value.Name) == strings.ToLower(indexString) {
-			t.Execute(w, artistsData.Array[ind])
+	for _, value := range artistsData.Array {
+		val := strings.ToLower(value.Name)
+		str := strings.ToLower(indexString)
+		if strings.Contains(val, str) {
+			artistsData.Valid = append(artistsData.Valid, value)
+			artistsData.Flag = true
 		}
 	}
+	t.Execute(w, artistsData)
 }
 
 func concertHandler(w http.ResponseWriter, r *http.Request) {
