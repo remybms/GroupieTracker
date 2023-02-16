@@ -34,6 +34,11 @@ type locations struct {
 	Dates     string
 }
 
+type rangeRelation struct {
+	Location []string
+	Dates    [][]string
+}
+
 type dates struct {
 	Id    int
 	Dates []string
@@ -161,6 +166,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func concertHandler(w http.ResponseWriter, r *http.Request) {
+	var concertsDatesLocations rangeRelation
 	indexString := r.FormValue("dates")
 	index, _ := strconv.Atoi(indexString)
 	t, err := template.ParseFiles("./static/html/concert.html")
@@ -168,7 +174,11 @@ func concertHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
-	t.Execute(w, concertsData.Relation.Index[index-1])
+	for location, dates := range concertsData.Relation.Index[index-1].DatesLocations {
+		concertsDatesLocations.Location = append(concertsDatesLocations.Location, location)
+		concertsDatesLocations.Dates = append(concertsDatesLocations.Dates, dates)
+	}
+	t.Execute(w, concertsDatesLocations)
 
 }
 

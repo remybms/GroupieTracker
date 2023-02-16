@@ -23,7 +23,13 @@
         </section>
     </div>
     
-    <div class="test">{{.DatesLocations}}</div>
-
+    <div class="test">
+        {{range $index, $location := .Location}}
+        {{$location}} :
+        {{range $dates := index $.Dates $index}}
+            {{$dates}}
+        {{end}}
+        {{end}}
+    </div>
 </body>
 </html>
