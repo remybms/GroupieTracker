@@ -28,28 +28,9 @@ type relation struct {
 	DatesLocations map[string][]string
 }
 
-type locations struct {
-	Id        int
-	Locations []string
-	Dates     string
-}
-
 type rangeRelation struct {
 	Location []string
 	Dates    [][]string
-}
-
-type dates struct {
-	Id    int
-	Dates []string
-}
-
-type ExtractDate struct {
-	Index []dates `json:"index"`
-}
-
-type ExtractLocation struct {
-	Index []locations `json:"index"`
 }
 
 type ExtractRelation struct {
@@ -57,7 +38,6 @@ type ExtractRelation struct {
 }
 
 type artistsArray struct {
-	*artists
 	Array []artists
 	Valid []artists
 	Flag  bool
@@ -104,43 +84,9 @@ func Relation() {
 	defer res.Body.Close()
 }
 
-func Locations() {
-
-	url := "https://groupietrackers.herokuapp.com/api/locations"
-	req, _ := http.NewRequest("GET", url, nil)
-	res, _ := http.DefaultClient.Do(req)
-	body, _ := ioutil.ReadAll(res.Body)
-	//fmt.Println(string(body))
-	err := json.Unmarshal([]byte(body), &concertsData.Locations)
-
-	if err != nil {
-		fmt.Println("Error :", err)
-		return
-	}
-	defer res.Body.Close()
-}
-
-func Dates() {
-
-	url := "https://groupietrackers.herokuapp.com/api/dates"
-	req, _ := http.NewRequest("GET", url, nil)
-	res, _ := http.DefaultClient.Do(req)
-	body, _ := ioutil.ReadAll(res.Body)
-	//fmt.Println(string(body))
-	err := json.Unmarshal([]byte(body), &concertsData.Dates)
-
-	if err != nil {
-		fmt.Println("Error :", err)
-		return
-	}
-	defer res.Body.Close()
-}
-
 func feedData() {
 	Artists()
 	Relation()
-	Locations()
-	Dates()
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
