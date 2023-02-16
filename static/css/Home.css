@@ -54,7 +54,7 @@ a{
     }
 }
 body{
-    background-color: #3F0579;
+    background-color: #1b1a1b;
 }
 
 /* Carte API */
@@ -78,6 +78,10 @@ body{
     align-items: center;
     border-radius: 20px;
     border: solid 4px #000;
+    transition: all 0.7s;
+}
+.home-left-block:hover{
+    transform: translate(2px,-5px)
 }
 .name{
     
