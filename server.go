@@ -77,7 +77,6 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	t.Execute(w, artistsData)
-	fmt.Println(artistsData.Valid)
 }
 
 func artistHandler(w http.ResponseWriter, r *http.Request) {
