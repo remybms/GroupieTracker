@@ -38,19 +38,14 @@ type ExtractRelation struct {
 }
 
 type artistsArray struct {
+	*artists
 	Array []artists
 	Valid []artists
 	Flag  bool
 }
 
-type concerts struct {
-	Relation  ExtractRelation
-	Locations ExtractLocation
-	Dates     ExtractDate
-}
-
 var artistsData artistsArray
-var concertsData concerts
+var concertsData ExtractRelation
 
 func Artists() {
 
@@ -75,7 +70,7 @@ func Relation() {
 	res, _ := http.DefaultClient.Do(req)
 	body, _ := ioutil.ReadAll(res.Body)
 	//fmt.Println(string(body))
-	err := json.Unmarshal([]byte(body), &concertsData.Relation)
+	err := json.Unmarshal([]byte(body), &concertsData)
 
 	if err != nil {
 		fmt.Println("Error :", err)
@@ -105,7 +100,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 	artistsData.Valid = []artists{}
 	artistsData.Flag = false
 	fmt.Println(indexString)
-	t, err := template.ParseFiles("./static/html/Research.html")
+	t, err := template.ParseFiles("./static/html/research.html")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -130,7 +125,7 @@ func concertHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
-	for location, dates := range concertsData.Relation.Index[index-1].DatesLocations {
+	for location, dates := range concertsData.Index[index-1].DatesLocations {
 		concertsDatesLocations.Location = append(concertsDatesLocations.Location, location)
 		concertsDatesLocations.Dates = append(concertsDatesLocations.Dates, dates)
 	}
