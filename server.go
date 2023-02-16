@@ -60,6 +60,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 func searchHandler(w http.ResponseWriter, r *http.Request) {
 	artistsData.artists = &artistsData.Array[0]
 	indexString := r.FormValue("research")
+	artistsData.Valid = []artists{}
 	artistsData.Flag = false
 	fmt.Println(indexString)
 	t, err := template.ParseFiles("./static/html/Research.html")
