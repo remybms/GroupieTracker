@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://localhost:8080/static/css/Artist.css">
+
+    <title>{{.Name}}</title>
+</head>
+<body>
+    <div class="header">
+        <section>
+            <div class="header">
+                <div class="header-left">
+                    <a class="active" href="/"><img
+                            src="https://tracedat.com/wp-content/uploads/2020/11/home-300x300.png"></img></a>
+                </div>
+                <div class="header-right">
+                    <h1 class="h1-header">Groupie Tracker</h1>
+                </div>
+            </div>
+        </section>
+    </div>
+
+   
+
+    <img class="img" src="{{.Image}}" alt="" />
+    <div class="name"> Nom de l'auteur : {{.Name}}</div>
+    <div class="members">Membre du groupe : {{.Members}}</div>
+    <div class="CreationDate">Creation du groupe {{.CreationDate}}</div>
+    <div class="FirstAlbum">Premier album sortie en : {{.FirstAlbum}}</div>
+    <div class="Location">Prochain concert à : {{.Location}}</div>
+    <form action="concert" method="post"> 
+        <button type="submit" value="{{.Id}}" name="dates" class="home-left-block">
+            <div class="test">Concerts en approche</div>
+        </button>
+    </form>
+    <!-- <div class="ConcertDates">Date du prochain concert : {{.ConcertDates}}</div> -->
+    <!-- <div class="Relations">Relation {{.Relations}}</div> -->
+</div>
+</body>
+</html>

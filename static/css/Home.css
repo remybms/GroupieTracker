@@ -2,12 +2,16 @@
     margin: 0;
     padding: 0;
 }
+body{
+    height: 100%;
+    background-color:#1e0579;
+}
 img {
     width : 60px;
     height : 60px;
     }
 .header{
-    background-color:#190131;;
+    background-color:#110131;;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -53,17 +57,15 @@ a{
         font-size: 15px;
     }
 }
-body{
-    background-color: #3F0579;
-}
+
 
 /* Carte API */
 .home-left{
-    margin-left: 30px;
-    display: flex;
-    justify-content: baseline;
+    padding: 1%;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto ;
     align-items:center;
-    gap: 50px;
+    gap: 40px;
     height: 50vh; 
     width: 25%;
 } 
