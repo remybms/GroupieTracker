@@ -66,9 +66,18 @@ func Artists() {
 func Relation() {
 
 	url := "https://groupietrackers.herokuapp.com/api/relation"
-	req, _ := http.NewRequest("GET", url, nil)
-	res, _ := http.DefaultClient.Do(req)
-	body, _ := ioutil.ReadAll(res.Body)
+	req, errorRequest := http.NewRequest("GET", url, nil)
+	if errorRequest != nil {
+		log.Fatal(errorRequest)
+	}
+	res, errorServ := http.DefaultClient.Do(req)
+	if errorServ != nil {
+		log.Fatal(errorServ)
+	}
+	body, errorFich := ioutil.ReadAll(res.Body)
+	if errorFich != nil {
+		log.Fatal(errorFich)
+	}
 	//fmt.Println(string(body))
 	err := json.Unmarshal([]byte(body), &concertsData)
 
