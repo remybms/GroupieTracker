@@ -2,24 +2,27 @@ const artist = [
     {name:"ACDC"},
     {name:"SOJA"},
     {name:"Queen"},
+    {name:"queez"},
+    {name:"sonj"}
 ];
 
-const searchinput = document.getElementById('searchInput')
+const searchinput = document.getElementById('search-header')
+searchinput.AddEventListener('keyup', myResearch)
 
-searchInput.AddEventListener('keyup', function(){
+function myResearch(){
     const input = searchinput.value;
+    console.log(input);
 
     const result = artist.filter(item => item.name.toLocaleLowerCase().includes(input.toLocaleLowerCase()));
 
-    let suggestion = '';
+    let final = '';
 
     if (input != ""){
-    result.forEach(resultItem => 
-            suggestion +=`
-            <div class="suggestion">${resultItem.name}</div>
-            `
-        )
+        result.forEach(resultItem =>
+                console.log(resultItem.name),
+                final += `<div class="suggestion">${resultItem.name}</div>`
+            )
     }
     
-    document.getElementById().innerHTML = suggestion;
-})
+    document.getElementById("suggestion").innerHTML = final;
+}
