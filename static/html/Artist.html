@@ -23,13 +23,14 @@
         </section>
     </div>
 
-   
+   <div class ="container1">
 
     <img class="img" src="{{.Image}}" alt="" />
     <div class="name"> Nom de l'auteur : {{.Name}}</div>
-    <div class="members">Membre du groupe : {{.Members}}</div>
-    <div class="CreationDate">Creation du groupe {{.CreationDate}}</div>
     <div class="FirstAlbum">Premier album sortie en : {{.FirstAlbum}}</div>
+    <div class="CreationDate">Creation du groupe {{.CreationDate}}</div></div>
+    <div class ="container2">
+        <div class="members">Membre du groupe : {{.Members}}</div>
     <div class="Location">Informations suplémentaires
     <form action="concert" method="post"> 
         <button type="submit" value="{{.Id}}" name="dates" class="home-left-block">
@@ -38,6 +39,6 @@
     </form>
     <!-- <div class="ConcertDates">Date du prochain concert : {{.ConcertDates}}</div> -->
     <!-- <div class="Relations">Relation {{.Relations}}</div> -->
-</div>
+
 </body>
 </html>
