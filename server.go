@@ -60,6 +60,10 @@ type artistsArray struct {
 	Array []artists
 }
 
+type artistsPaginate struct {
+	Array []artists
+}
+
 type concerts struct {
 	Relation  ExtractRelation
 	Locations ExtractLocation
@@ -150,6 +154,22 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func paginateHandler(w http.ResponseWriter, r *http.Request) {
+	var artistsDataPaginate artistsPaginate
+	t, err := template.ParseFiles("./static/html/Home.html")
+	indexString := r.FormValue("nb-items")
+	index, _ := strconv.Atoi(indexString)
+	for indexRange := 0; indexRange < index; index++ {
+		artistsDataPaginate.Array = append(artistsDataPaginate.Array, artistsData.Array[indexRange])
+	}
+	fmt.Println(artistsDataPaginate)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	t.Execute(w, artistsDataPaginate)
+}
+
 func searchHandler(w http.ResponseWriter, r *http.Request) {
 	indexString := r.FormValue("research")
 	fmt.Println(indexString)
@@ -202,6 +222,7 @@ func main() {
 	http.HandleFunc("/artist", artistHandler)
 	http.HandleFunc("/search", searchHandler)
 	http.HandleFunc("/concert", concertHandler)
+	http.HandleFunc("/paginate", paginateHandler)
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}

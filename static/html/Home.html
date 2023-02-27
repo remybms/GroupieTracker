@@ -32,6 +32,15 @@
     </div>
     
     <div class="home-left">
+        <form action="paginate" method="post">
+            <select name="nb-items">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+            </select>
+            <input type="submit" value="afficher" />
+        </form>
         {{range .Array}}
         <form action="artist" method="post"> 
             <button type="submit" value="{{.Id}}" name="card" class="home-left-block">
