@@ -58,11 +58,11 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func searchHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("tu es dans la boucle")
 	artistsData.artists = &artistsData.Array[0]
 	indexString := r.FormValue("research")
 	artistsData.Valid = []artists{}
 	artistsData.Flag = false
-	fmt.Println(indexString)
 	t, err := template.ParseFiles("./static/html/Research.html")
 	if err != nil {
 		fmt.Println(err)
@@ -81,14 +81,19 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 
 func artistHandler(w http.ResponseWriter, r *http.Request) {
 	indexString := r.FormValue("card")
-	index, _ := strconv.Atoi(indexString)
+	indexStringSelect := r.FormValue("languages")
+	index := 0
+	if len(indexString) > 0 {
+		index, _ = strconv.Atoi(indexString)
+	} else {
+		index, _ = strconv.Atoi(indexStringSelect)
+	}
 	t, err := template.ParseFiles("./static/html/Artist.html")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	t.Execute(w, artistsData.Array[index-1])
-
 }
 
 func main() {

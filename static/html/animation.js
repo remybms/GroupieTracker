@@ -16,7 +16,6 @@ function myResearch(){
     let final = '';
     if (input != ""){
         result.forEach(resultItem =>
-                console.log(resultItem.name),
                 final += `<div class="suggestion">${resultItem.name}</div>`,
             )
     }
