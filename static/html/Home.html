@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -27,6 +28,16 @@
             </div>
         </section>
     </div>
+
+    <form action="/">
+        <select name="languages" id="lang" >
+            <option value=""> > Artiste </option>
+            {{range .Array}}
+                <option value="{{.Id}}">{{.Name}}</option>
+            {{end}}
+            <input type="submit" value="submit">
+        </select>
+    </form>
     
     <div class="home-left">
         {{range .Array}}
