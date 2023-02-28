@@ -144,25 +144,39 @@ func feedData() {
 	Dates()
 }
 
+var indexString string
+var indexRange int = 0
+
 func homeHandler(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("./static/html/Home.html")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	t.Execute(w, artistsData)
-
-}
-
-func paginateHandler(w http.ResponseWriter, r *http.Request) {
 	var artistsDataPaginate artistsPaginate
 	t, err := template.ParseFiles("./static/html/Home.html")
-	indexString := r.FormValue("nb-items")
-	index, _ := strconv.Atoi(indexString)
-	for indexRange := 0; indexRange < index; index++ {
-		artistsDataPaginate.Array = append(artistsDataPaginate.Array, artistsData.Array[indexRange])
+	nbItems := r.FormValue("nb-items")
+	if nbItems != "" {
+		indexString = nbItems
 	}
-	fmt.Println(artistsDataPaginate)
+	index, _ := strconv.Atoi(indexString)
+
+	page := r.FormValue("page")
+	if page == "previous" {
+		indexRange -= index * 3
+	} else if page == "next" {
+		indexRange -= index
+	} else if nbItems != "" {
+		indexRange = 0
+	}
+
+	if indexString == "" {
+		artistsDataPaginate.Array = artistsData.Array
+	} else {
+		for nbItem := 0; nbItem < index; nbItem++ {
+			if indexRange <= len(artistsData.Array) {
+				artistsDataPaginate.Array = append(artistsDataPaginate.Array, artistsData.Array[indexRange])
+				indexRange++
+				fmt.Println(indexRange)
+			}
+
+		}
+	}
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -222,7 +236,6 @@ func main() {
 	http.HandleFunc("/artist", artistHandler)
 	http.HandleFunc("/search", searchHandler)
 	http.HandleFunc("/concert", concertHandler)
-	http.HandleFunc("/paginate", paginateHandler)
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}
