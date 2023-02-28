@@ -1,127 +1,150 @@
-*{
+* {
     margin: 0;
     padding: 0;
 }
-body{
-    background-color:#1e0579;
+
+body {
+    height: 100%;
+    background-color: #1e0579;
 }
-img {
-    width : 60px;
-    height : 60px;
-    }
-.header{
-    background-color:#110131;;
+
+.header {
+    background-color: #110131;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    padding: 10 ;
 }
-.header-right{ 
-    display:flex;
+img {
+    width: 60;
+    height: 60px;
+    align-self: center;
+    margin-left: 10px;
+  }
+
+.h1-header {
+    color: #fff;
+    font-size: 150%;
+    font-weight: 60px;
+    text-align:left;
+}
+
+.header-right {
+    display: flex;
     flex-direction: row;
-    justify-content:end;
+    justify-content: flex-end;
     align-items: center;
 }
 
-.h1-header{
-    color: #fff;
-    padding: 20px 100px 20px 20px;
-}
-a{
+a {
     text-decoration: none;
     color: #ffffff;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
-}
-.active{
-    padding-right: 30px;
+    padding: 0 20px;
 }
 
+
+.active{
+    padding-right: 3vw;
+}
 
 .container1 {
     display: flex;
-  /* align-items: center; */
-    /* max-width: 90%; */
     margin: 1% auto;
-    /* padding-left: 10px; */
-  }
-  .container2 {
+}
+
+.container2 {
     display:flex;
-    padding-left: 35%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
 
-
-  }
-    
-  .img {
-    margin-left: 3%;
-    width: 350px;
-    height: 350px;
+.img {
+    margin-left: 2%;
+    width: 35vw;
+    height: 30vw;
     background-color: #ffffff;
     border-radius: 15%;
-    border: solid 3px #000;
+    border: solid 0.2vw #000;
 }
 
 .name {
-    margin-left: 30px;
-    width: 200px;
+    margin-left: 3vw;
+    width: 20vw;
     height: 100%;
     padding: 2%;
     background-color: #110131;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 10px;
+    border-radius: 1vw;
     color: white;
     text-align: center;
-}
-.members{
-    margin-left: 30px;
-    width: 250px;
-    padding: 2%;
-    background-color: #110131;
-    display: flex;
-    justify-content: center;
-    border-radius: 10px;
-    color: white;
-    text-align: center;
-}
-.CreationDate{
-    padding: 1%;
-    margin-left: 30px;
-    width: 250px;
-    height: 100%;
-    padding: 2%;
-    background-color: #110131;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    color: white;
-    text-align: center;
+    font-size: 2vw;
 }
 
+.members{
+    margin-top: 1vw;
+    width: 25vw;
+    padding: 2%;
+    background-color: #110131;
+    display: flex;
+    justify-content: center;
+    border-radius: 1vw;
+    color: white;
+    text-align: center;
+    font-size: 2vw;
+}
+
+.CreationDate{
+        width: 25vw;
+        padding: 1%;
+        background-color: #110131;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 1vw;
+        color: white;
+        text-align: center;
+        font-size: 2vw;
+        margin-top: -150px;
+        margin-left: 20vw;
+
+    }
 .FirstAlbum{
-    margin-left: 30px;
-    width: 200px;
+    width: 20vw;
     height: 100%;
     padding: 2%;
     background-color: #110131;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 10px;
+    border-radius: 1vw;
     color: white;
     text-align: center;
+    font-size: 2vw;
 }
 .Location{
-    margin-left: 30px;
-    width: 250px;
-    height: 100%;
-    padding: 2%;
-    background-color: #110131;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    color: white;
-    text-align: center;
+    margin-left: -10vw;
+    width: 25vw;
+        padding: 1%;
+        background-color: #110131;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 1vw;
+        color: white;
+        text-align: center;
+        font-size: 2vw;
+        margin-top: 10px;
 }
+
+
+@media only screen and (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: center
+    }}
