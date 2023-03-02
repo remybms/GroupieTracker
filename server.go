@@ -158,23 +158,22 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 
 	page := r.FormValue("page")
 	if page == "previous" {
-		indexRange -= index * 3
-	} else if page == "next" {
-		indexRange -= index
-	} else if nbItems != "" {
-		indexRange = 0
+		if indexRange < index {
+			indexRange = 0
+		} else {
+			indexRange -= index
+		}
 	}
-
+	fmt.Println(indexRange)
 	if indexString == "" {
 		artistsDataPaginate.Array = artistsData.Array
 	} else {
 		for nbItem := 0; nbItem < index; nbItem++ {
-			if indexRange <= len(artistsData.Array) {
+			if indexRange < len(artistsData.Array) {
+
 				artistsDataPaginate.Array = append(artistsDataPaginate.Array, artistsData.Array[indexRange])
 				indexRange++
-				fmt.Println(indexRange)
 			}
-
 		}
 	}
 	if err != nil {
