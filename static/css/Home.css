@@ -98,7 +98,7 @@ a {
 @media screen and (max-width: 768px) {
     .home-left {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 10px;
+        gap: 100px;
     }
     .home-left-block {
         width: 150px;
