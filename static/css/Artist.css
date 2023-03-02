@@ -6,6 +6,7 @@
 body {
     height: 100%;
     background-color: #1e0579;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .header {
@@ -21,7 +22,14 @@ img {
     height: 60px;
     align-self: center;
     margin-left: 10px;
-  }
+}
+.img-groupe {
+    width: 30%;
+    height: 30%;
+    align-self: center;
+    margin-left: 10px;
+    border-radius: 60%;
+}
 
 .h1-header {
     color: #fff;
@@ -52,14 +60,13 @@ a {
 
 .container1 {
     display: flex;
-    margin: 1% auto;
+    margin: 1%;
+    justify-content: space-between;
 }
 
 .container2 {
     display:flex;
     justify-content: center;
-    align-items: center;
-    flex-direction: column;
 }
 
 .img {
@@ -73,12 +80,11 @@ a {
 }
 
 .name {
-    margin-left: 3vw;
     width: 20vw;
-    height: 100%;
-    padding: 2%;
+    padding: 5%;
     background-color: #110131;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     border-radius: 1vw;
@@ -87,13 +93,21 @@ a {
     font-size: 2vw;
 }
 
+.left{
+    margin: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
 .members{
-    margin-top: 1vw;
-    width: 25vw;
+    width: 20vw;
     padding: 2%;
     background-color: #110131;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     border-radius: 1vw;
     color: white;
     text-align: center;
@@ -101,26 +115,25 @@ a {
 }
 
 .CreationDate{
-        width: 25vw;
-        padding: 1%;
-        background-color: #110131;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 1vw;
-        color: white;
-        text-align: center;
-        font-size: 2vw;
-        margin-top: -150px;
-        margin-left: 20vw;
-
-    }
-.FirstAlbum{
     width: 20vw;
-    height: 100%;
-    padding: 2%;
+    padding: 5%;
     background-color: #110131;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1vw;
+    color: white;
+    text-align: center;
+    font-size: 2vw;
+
+}
+.FirstAlbum{
+    width: 20vw;
+    padding: 5%;
+    background-color: #110131;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     border-radius: 1vw;
@@ -129,18 +142,18 @@ a {
     font-size: 2vw;
 }
 .Location{
-    margin-left: -10vw;
     width: 25vw;
-        padding: 1%;
-        background-color: #110131;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 1vw;
-        color: white;
-        text-align: center;
-        font-size: 2vw;
-        margin-top: 10px;
+    padding: 1%;
+    background-color: #110131;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1vw;
+    color: white;
+    text-align: center;
+    font-size: 2vw;
+    margin-top: 10px;
 }
 
 
