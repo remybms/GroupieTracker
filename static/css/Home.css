@@ -68,6 +68,7 @@ a {
     justify-content: center;
     gap: 20px;
     height: auto;
+
 }
 
 .home-left-block {
@@ -80,6 +81,10 @@ a {
     align-items: center;
     border-radius: 20px;
     border: solid 4px #000;
+    transition: all 0.7s;
+}
+.home-left-block:hover{
+    transform: translate(2px,-5px)
 }
 
 .name {
@@ -96,6 +101,28 @@ a {
     border-radius: 15%;
     border: solid 3px #000;
 }
+.img:hover{
+    -webkit-animation: rotation 5s infinite linear;
+    border-radius: 50%;
+    transition: 0.8s;
+}
+
+@keyframes circle-animation {
+    from {
+        border-radius: 0%;
+    }
+    to {
+        border-radius: 50%;
+    }
+}
+
+@-webkit-keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+
 
 @media screen and (max-width: 768px) {
     .home-left {
