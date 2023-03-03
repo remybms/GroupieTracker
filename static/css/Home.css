@@ -97,3 +97,26 @@ body{
     border-radius: 15%;
     border: solid 3px #000;
 }
+.img:hover{
+    -webkit-animation: rotation 5s infinite linear;
+    border-radius: 50%;
+    transition: 0.8s;
+}
+
+@keyframes circle-animation {
+    from {
+        border-radius: 0%;
+    }
+    to {
+        border-radius: 50%;
+    }
+}
+
+@-webkit-keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+}
