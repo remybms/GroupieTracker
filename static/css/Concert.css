@@ -13,6 +13,12 @@ body{
     color: #fff;
     display: flex;
 }
+.arianeLink{
+    margin: 10%;
+}
+.arianeSeparator{
+    margin-top: 10%;
+}
 img {
     width : 60px;
     height : 60px;
