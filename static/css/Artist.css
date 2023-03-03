@@ -83,6 +83,7 @@ a {
     width: 35vw;
     height: 30vw;
     background-color: #ffffff;
+
     border-radius: 15%;
     border: solid 0.2vw #000;
 }
@@ -119,7 +120,6 @@ a {
     border-radius: 1vw;
     color: white;
     text-align: center;
-    font-size: 2vw;
 }
 
 .CreationDate{

@@ -28,28 +28,9 @@ type relation struct {
 	DatesLocations map[string][]string
 }
 
-type locations struct {
-	Id        int
-	Locations []string
-	Dates     string
-}
-
 type rangeRelation struct {
 	Location []string
 	Dates    [][]string
-}
-
-type dates struct {
-	Id    int
-	Dates []string
-}
-
-type ExtractDate struct {
-	Index []dates `json:"index"`
-}
-
-type ExtractLocation struct {
-	Index []locations `json:"index"`
 }
 
 type ExtractRelation struct {
@@ -57,17 +38,14 @@ type ExtractRelation struct {
 }
 
 type artistsArray struct {
+	*artists
 	Array []artists
-}
-
-type concerts struct {
-	Relation  ExtractRelation
-	Locations ExtractLocation
-	Dates     ExtractDate
+	Valid []artists
+	Flag  bool
 }
 
 var artistsData artistsArray
-var concertsData concerts
+var concertsData ExtractRelation
 
 func Artists() {
 
@@ -88,43 +66,20 @@ func Artists() {
 func Relation() {
 
 	url := "https://groupietrackers.herokuapp.com/api/relation"
-	req, _ := http.NewRequest("GET", url, nil)
-	res, _ := http.DefaultClient.Do(req)
-	body, _ := ioutil.ReadAll(res.Body)
-	//fmt.Println(string(body))
-	err := json.Unmarshal([]byte(body), &concertsData.Relation)
-
-	if err != nil {
-		fmt.Println("Error :", err)
-		return
+	req, errorRequest := http.NewRequest("GET", url, nil)
+	if errorRequest != nil {
+		log.Fatal(errorRequest)
 	}
-	defer res.Body.Close()
-}
-
-func Locations() {
-
-	url := "https://groupietrackers.herokuapp.com/api/locations"
-	req, _ := http.NewRequest("GET", url, nil)
-	res, _ := http.DefaultClient.Do(req)
-	body, _ := ioutil.ReadAll(res.Body)
-	//fmt.Println(string(body))
-	err := json.Unmarshal([]byte(body), &concertsData.Locations)
-
-	if err != nil {
-		fmt.Println("Error :", err)
-		return
+	res, errorServ := http.DefaultClient.Do(req)
+	if errorServ != nil {
+		log.Fatal(errorServ)
 	}
-	defer res.Body.Close()
-}
-
-func Dates() {
-
-	url := "https://groupietrackers.herokuapp.com/api/dates"
-	req, _ := http.NewRequest("GET", url, nil)
-	res, _ := http.DefaultClient.Do(req)
-	body, _ := ioutil.ReadAll(res.Body)
+	body, errorFich := ioutil.ReadAll(res.Body)
+	if errorFich != nil {
+		log.Fatal(errorFich)
+	}
 	//fmt.Println(string(body))
-	err := json.Unmarshal([]byte(body), &concertsData.Dates)
+	err := json.Unmarshal([]byte(body), &concertsData)
 
 	if err != nil {
 		fmt.Println("Error :", err)
@@ -136,8 +91,6 @@ func Dates() {
 func feedData() {
 	Artists()
 	Relation()
-	Locations()
-	Dates()
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
@@ -151,18 +104,25 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func searchHandler(w http.ResponseWriter, r *http.Request) {
+	artistsData.artists = &artistsData.Array[0]
 	indexString := r.FormValue("research")
+	artistsData.Valid = []artists{}
+	artistsData.Flag = false
 	fmt.Println(indexString)
-	t, err := template.ParseFiles("./static/html/Artist.html")
+	t, err := template.ParseFiles("./static/html/research.html")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	for ind, value := range artistsData.Array {
-		if strings.ToLower(value.Name) == strings.ToLower(indexString) {
-			t.Execute(w, artistsData.Array[ind])
+	for _, value := range artistsData.Array {
+		val := strings.ToLower(value.Name)
+		str := strings.ToLower(indexString)
+		if strings.Contains(val, str) {
+			artistsData.Valid = append(artistsData.Valid, value)
+			artistsData.Flag = true
 		}
 	}
+	t.Execute(w, artistsData)
 }
 
 func concertHandler(w http.ResponseWriter, r *http.Request) {
@@ -174,7 +134,7 @@ func concertHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
-	for location, dates := range concertsData.Relation.Index[index-1].DatesLocations {
+	for location, dates := range concertsData.Index[index-1].DatesLocations {
 		concertsDatesLocations.Location = append(concertsDatesLocations.Location, location)
 		concertsDatesLocations.Dates = append(concertsDatesLocations.Dates, dates)
 	}
