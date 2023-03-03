@@ -107,15 +107,6 @@ a {
     transition: 0.8s;
 }
 
-@keyframes circle-animation {
-    from {
-        border-radius: 0%;
-    }
-    to {
-        border-radius: 50%;
-    }
-}
-
 @-webkit-keyframes rotation {
     from {
       transform: rotate(0deg);

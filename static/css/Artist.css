@@ -37,6 +37,7 @@ img {
     align-self: center;
     margin-left: 10px;
     border-radius: 60%;
+    -webkit-animation: rotation 5s infinite linear;
 }
 
 .h1-header {
@@ -86,6 +87,14 @@ a {
 
     border-radius: 15%;
     border: solid 0.2vw #000;
+}
+@-webkit-keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
 }
 
 .name {
