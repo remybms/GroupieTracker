@@ -56,7 +56,10 @@
                 Nom complet du ou des membres : 
             </div> <br>
             {{range $index, $members := .Members}}
-            {{$members}}
+            <div>
+                {{$members}}
+            </div>
+            
             {{end}}
         </div>
     </div>

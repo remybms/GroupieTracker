@@ -122,7 +122,8 @@ a {
     }
     to {
       transform: rotate(359deg);
-
+    }
+}
 
 @media screen and (max-width: 768px) {
     .home-left {
