@@ -4,15 +4,17 @@
 }
 body{
     height: 100%;
-    background-color:#1e0579;
-    color: #fff;
+    background-image: url(../img/concert.png);
+    background-size: 100%;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
 }
 img {
     width : 60px;
     height : 60px;
     }
 .header{
-    background-color:#110131;;
+    background-color:#190131;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -48,7 +50,7 @@ a{
 .card{
     width: 25vw;
     padding: 1%;
-    background-color: #31012b;
+    background-color: #110131;
     display: flex;
     flex-direction: column;
     justify-content: center;
