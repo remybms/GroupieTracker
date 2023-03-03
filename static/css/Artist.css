@@ -1,124 +1,172 @@
-*{
+* {
     margin: 0;
     padding: 0;
 }
-body{
-    background-color:#1e0579;
+
+body {
+    height: 100%;
+    background-color: #3F0579;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
-img {
-    width : 60px;
-    height : 60px;
-    }
-.header{
-    background-color:#110131;;
+
+.home-left-block{
+    border-radius: 10px;
+    padding: 5%;
+    background-color: #3F0579;
+    color: #fff;
+    border-color: #fff;
+}
+
+.header {
+    background-color: #190131;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    padding: 10 ;
 }
-.header-right{ 
-    display:flex;
+img {
+    width: 60;
+    height: 60px;
+    align-self: center;
+    margin-left: 10px;
+}
+.img-groupe {
+    width: 30%;
+    height: 30%;
+    align-self: center;
+    margin-left: 10px;
+    border-radius: 60%;
+}
+
+.h1-header {
+    color: #fff;
+    font-size: 150%;
+    font-weight: 60px;
+    text-align:left;
+}
+
+.header-right {
+    display: flex;
     flex-direction: row;
-    justify-content:end;
+    justify-content: flex-end;
     align-items: center;
 }
 
-.h1-header{
-    color: #fff;
-    padding: 20px 100px 20px 20px;
-}
-a{
+a {
     text-decoration: none;
     color: #ffffff;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
+    padding: 0 20px;
 }
+
+
 .active{
-    padding-left: 30px;
+    padding-right: 3vw;
 }
-.img{
-    position:absolute;
-    gap: 5%;
-    top: 30%;
-    width: 200px;
-    height: 200px;
+
+.container1 {
+    display: flex;
+    margin: 1%;
+    justify-content: space-between;
+}
+
+.container2 {
+    display:flex;
+    justify-content: center;
+}
+
+.img {
+    margin-left: 4%;
+    margin-top: 4%;
+    width: 35vw;
+    height: 30vw;
+    background-color: #ffffff;
+
     border-radius: 15%;
-    border: solid 3px #000;
+    border: solid 0.2vw #000;
 }
-.name{
-    position:absolute;
-    top: 15%;
-    left: 20%;
-    margin-left: 30px;
-    width: 300px;
-    height: 5%;
+
+.name {
+    width: 20vw;
+    padding: 5%;
     background-color: #110131;
     display: flex;
     flex-direction: column;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
-    border-radius: 20px;
+    border-radius: 1vw;
     color: white;
     text-align: center;
+    font-size: 2vw;
 }
+
+.left{
+    margin: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
 .members{
-    position:absolute;
-    top: 15%;
-    left: 60%;
-    margin-left: 30px;
-    width: 300px;
-    height: 10%;
-    background-color: #110131;
-    display: flex;
-    justify-content:center;
-    border-radius: 20px;
-    color: white;
-    text-align: center;
-}
-.CreationDate{
-    position:absolute;
-    top: 30%;
-    left: 60%;
-    margin-left: 30px;
-    width: 300px;
-    height: 10%;
+    width: 20vw;
+    padding: 2%;
     background-color: #110131;
     display: flex;
     flex-direction: column;
-    justify-content:baseline;
+    justify-content: center;
     align-items: center;
-    border-radius: 10px;
+    border-radius: 1vw;
     color: white;
     text-align: center;
+}
+
+.CreationDate{
+    width: 20vw;
+    padding: 5%;
+    background-color: #110131;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1vw;
+    color: white;
+    text-align: center;
+    font-size: 2vw;
+
 }
 .FirstAlbum{
-    position:absolute;
-    top: 30%;
-    left: 20%;
-    margin-left: 30px;
-    width: 300px;
-    height: 10%;
+    width: 20vw;
+    padding: 5%;
     background-color: #110131;
     display: flex;
     flex-direction: column;
-    justify-content:baseline;
+    justify-content: center;
     align-items: center;
-    border-radius: 10px;
+    border-radius: 1vw;
     color: white;
     text-align: center;
+    font-size: 2vw;
 }
 .Location{
-    position:absolute;
-    top: 50%;
-    left: 20%;
-    margin-left: 30px;
-    width: 300px;
-    height: 10%;
+    width: 25vw;
+    padding: 1%;
     background-color: #110131;
     display: flex;
     flex-direction: column;
-    justify-content:baseline;
+    justify-content: center;
     align-items: center;
-    border-radius: 10px;
+    border-radius: 1vw;
     color: white;
     text-align: center;
+    font-size: 2vw;
+    margin-top: 10px;
 }
+
+
+@media only screen and (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: last baseline
+    }}

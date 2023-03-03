@@ -25,10 +25,14 @@
     
     <div class="test">
         {{range $index, $location := .Location}}
-        {{$location}} :
-        {{range $dates := index $.Dates $index}}
-            {{$dates}}
-        {{end}}
+        <div class="card">
+            {{$location}} :
+            {{range $dates := index $.Dates $index}}
+            <div class="dates">
+                {{$dates}}
+            </div>
+            {{end}}
+        </div>
         {{end}}
     </div>
 </body>
