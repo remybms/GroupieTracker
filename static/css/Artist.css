@@ -9,6 +9,14 @@ body {
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
+.home-left-block{
+    border-radius: 10px;
+    padding: 5%;
+    background-color: #3F0579;
+    color: #fff;
+    border-color: #fff;
+}
+
 .header {
     background-color: #190131;
     display: flex;
