@@ -144,10 +144,10 @@ func feedData() {
 	Dates()
 }
 
-var indexString string
-var indexRange int = 0
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
+	var indexString string
+	var indexRange int = 0
 	var artistsDataPaginate artistsPaginate
 	t, err := template.ParseFiles("./static/html/Home.html")
 	nbItems := r.FormValue("nb-items")
@@ -155,16 +155,11 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		indexString = nbItems
 	}
 	index, _ := strconv.Atoi(indexString)
-
-	page := r.FormValue("page")
-	if page == "previous" {
 		if indexRange < index {
 			indexRange = 0
 		} else {
 			indexRange -= index
 		}
-	}
-	fmt.Println(indexRange)
 	if indexString == "" {
 		artistsDataPaginate.Array = artistsData.Array
 	} else {
@@ -181,6 +176,13 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	t.Execute(w, artistsDataPaginate)
+}
+func getSelectedOption(value string, optionValue string) string {
+	if value == optionValue {
+		return "selected"
+	} else {
+		return ""
+	}
 }
 
 func searchHandler(w http.ResponseWriter, r *http.Request) {
