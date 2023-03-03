@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://localhost:8080/static/css/Artist.css">
+
+    <title>{{.Name}}</title>
+</head>
+<body>
+    <div class="header">
+        <section>
+            <div class="header">
+                <div class="header-left">
+                    <a class="active" href="/"><img
+                            src="https://tracedat.com/wp-content/uploads/2020/11/home-300x300.png"></img></a>
+                </div>
+                <div class="header-right">
+                    <h1 class="h1-header">Groupie Tracker</h1>
+                </div>
+                <div class="ariane">
+                    <a href="/">Home</a>
+                    >
+                    <a href="/artist">{{.Name}}</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+   <div class ="container1">
+
+        <img class="img-groupe" src="{{.Image}}" alt="" />
+
+        <div class="left">
+            <div class="name"> 
+                <div>
+                    Nom d'artiste :
+                </div> 
+                <div>
+                    {{.Name}}
+                </div>
+            </div>
+            <div class="CreationDate">
+                <div>Année de création : </div>
+                <div>{{.CreationDate}}</div>
+            </div>
+            <div class="FirstAlbum">
+                <div>Date du premier album : </div>
+                <div>{{.FirstAlbum}}</div>
+            </div>
+        </div>
+    
+        <div class="members">
+            <div>
+                Nom complet du ou des membres : 
+            </div> <br>
+            {{range $index, $members := .Members}}
+            {{$members}}
+            {{end}}
+        </div>
+    </div>
+    <div class ="container2">
+        
+        <div class="Location">Informations suplémentaires
+            <form action="concert" method="post"> 
+                <button type="submit" value="{{.Id}}" name="dates" class="home-left-block">
+                    <div class="test">Concerts en approche</div>
+                </button>
+            </form>
+        </div>
+    <!-- <div class="ConcertDates">Date du prochain concert : {{.ConcertDates}}</div> -->
+    <!-- <div class="Relations">Relation {{.Relations}}</div> -->
+
+</body>
+</html>
