@@ -131,7 +131,6 @@ var index int
 func concertHandler(w http.ResponseWriter, r *http.Request) {
 	var concertsDatesLocations rangeRelation
 	indexString := r.FormValue("dates")
-	fmt.Println(indexString)
 	if indexString != "" {
 		index, _ = strconv.Atoi(indexString)
 	}
