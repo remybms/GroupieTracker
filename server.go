@@ -177,22 +177,37 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, artistsDataPaginate)
 }
 
-var currentIndex=0
+var currentIndex int
 
 func handleNextButton(w http.ResponseWriter, r *http.Request) {
+	t, err := template.ParseFiles("./static/html/Home.html")
+	NextButton := r.FormValue("NextButton")
+
 	currentIndex++
 	if currentIndex >= len(artistsData.Array) {
 		currentIndex = 0
 	}
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	updateLabel()
+	t.Execute(w, NextButton)
 }
 
 func handlePrevButton(w http.ResponseWriter, r *http.Request) {
+	t, err := template.ParseFiles("./static/html/Home.html")
+	PreviousButton := r.FormValue("PreviousButton")
 	currentIndex--
-	if currentIndex < 0 {
-		currentIndex = len(artistsData.Array) - 1
+	if currentIndex <= len(artistsData.Array) {
+		currentIndex = -1
+	}
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 	updateLabel()
+	t.Execute(w, PreviousButton)
 }
 
 func updateLabel() {
