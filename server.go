@@ -125,10 +125,15 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, artistsData)
 }
 
+var index int
+
 func concertHandler(w http.ResponseWriter, r *http.Request) {
 	var concertsDatesLocations rangeRelation
 	indexString := r.FormValue("dates")
-	index, _ := strconv.Atoi(indexString)
+	if indexString != "" {
+		index, _ = strconv.Atoi(indexString)
+	}
+
 	t, err := template.ParseFiles("./static/html/concert.html")
 	if err != nil {
 		fmt.Println(err)
@@ -144,12 +149,8 @@ func concertHandler(w http.ResponseWriter, r *http.Request) {
 
 func artistHandler(w http.ResponseWriter, r *http.Request) {
 	indexString := r.FormValue("card")
-	indexStringSelect := r.FormValue("languages")
-	index := 0
-	if len(indexString) > 0 {
+	if indexString != "" {
 		index, _ = strconv.Atoi(indexString)
-	} else {
-		index, _ = strconv.Atoi(indexStringSelect)
 	}
 	t, err := template.ParseFiles("./static/html/Artist.html")
 	if err != nil {
