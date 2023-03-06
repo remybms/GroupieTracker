@@ -111,6 +111,11 @@ a {
     font-size: 2vw;
 }
 
+.ariane{
+    color: #fff;
+    display: flex;
+}
+
 .left{
     margin: 2%;
     display: flex;
