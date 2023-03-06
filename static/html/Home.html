@@ -11,6 +11,12 @@
 </head>
 
 <body>
+    <datalist id="names">
+        {{range .Array}}
+        <option value="{{.Name}}">
+        {{end}}
+    </datalist>
+    
     <script src="animation.js"></script>
     <div class="header">
         <section>
@@ -22,7 +28,7 @@
                 <div class="header-right">
                     <h1 class="h1-header">Groupie Tracker</h1>
                     <form action="/search">
-                        <input id="search-header" type="text" name="research" placeholder="rechercher.." autocomplete="off" />
+                        <input id="search-header" type="search" name="research" placeholder="rechercher.." list="names" />
                     </form>
                     <div id="suggestion"></div>
                 </div>

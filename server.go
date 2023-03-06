@@ -63,7 +63,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 	indexString := r.FormValue("research")
 	artistsData.Valid = []artists{}
 	artistsData.Flag = false
-	t, err := template.ParseFiles("./static/html/Research.html")
+	t, err := template.ParseFiles("./static/html/research.html")
 	if err != nil {
 		fmt.Println(err)
 		return
