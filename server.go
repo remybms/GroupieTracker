@@ -144,7 +144,6 @@ func feedData() {
 	Dates()
 }
 
-
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	var indexString string
 	var indexRange int = 0
@@ -155,11 +154,11 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		indexString = nbItems
 	}
 	index, _ := strconv.Atoi(indexString)
-		if indexRange < index {
-			indexRange = 0
-		} else {
-			indexRange -= index
-		}
+	if indexRange < index {
+		indexRange = 0
+	} else {
+		indexRange -= index
+	}
 	if indexString == "" {
 		artistsDataPaginate.Array = artistsData.Array
 	} else {
@@ -177,6 +176,30 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	t.Execute(w, artistsDataPaginate)
 }
+
+var currentIndex=0
+
+func handleNextButton(w http.ResponseWriter, r *http.Request) {
+	currentIndex++
+	if currentIndex >= len(artistsData.Array) {
+		currentIndex = 0
+	}
+	updateLabel()
+}
+
+func handlePrevButton(w http.ResponseWriter, r *http.Request) {
+	currentIndex--
+	if currentIndex < 0 {
+		currentIndex = len(artistsData.Array) - 1
+	}
+	updateLabel()
+}
+
+func updateLabel() {
+	selectedItem := artistsData.Array[currentIndex]
+	fmt.Printf("Element sélectionné : %s\n", selectedItem)
+}
+
 func getSelectedOption(value string, optionValue string) string {
 	if value == optionValue {
 		return "selected"
