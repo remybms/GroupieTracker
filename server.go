@@ -105,11 +105,11 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func searchHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("tu es dans la boucle")
 	artistsData.artists = &artistsData.Array[0]
 	indexString := r.FormValue("research")
 	artistsData.Valid = []artists{}
 	artistsData.Flag = false
-	fmt.Println(indexString)
 	t, err := template.ParseFiles("./static/html/research.html")
 	if err != nil {
 		fmt.Println(err)
@@ -152,6 +152,7 @@ func artistHandler(w http.ResponseWriter, r *http.Request) {
 	indexString := r.FormValue("card")
 	if indexString != "" {
 		index, _ = strconv.Atoi(indexString)
+
 	}
 	t, err := template.ParseFiles("./static/html/Artist.html")
 	if err != nil {
@@ -160,7 +161,6 @@ func artistHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	t.Execute(w, artistsData.Array[index-1])
-
 }
 
 func main() {
