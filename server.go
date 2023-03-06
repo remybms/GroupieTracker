@@ -29,6 +29,7 @@ type relation struct {
 }
 
 type rangeRelation struct {
+	Name     string
 	Location []string
 	Dates    [][]string
 }
@@ -133,12 +134,12 @@ func concertHandler(w http.ResponseWriter, r *http.Request) {
 	if indexString != "" {
 		index, _ = strconv.Atoi(indexString)
 	}
-
 	t, err := template.ParseFiles("./static/html/concert.html")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+	concertsDatesLocations.Name = string(artistsData.Array[index-1].Name)
 	for location, dates := range concertsData.Index[index-1].DatesLocations {
 		concertsDatesLocations.Location = append(concertsDatesLocations.Location, location)
 		concertsDatesLocations.Dates = append(concertsDatesLocations.Dates, dates)
@@ -157,6 +158,7 @@ func artistHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
+
 	t.Execute(w, artistsData.Array[index-1])
 }
 
