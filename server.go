@@ -185,13 +185,12 @@ func handleNextButton(w http.ResponseWriter, r *http.Request) {
 
 	currentIndex++
 	if currentIndex >= len(artistsData.Array) {
-		currentIndex = 0
+		currentIndex = +5
 	}
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	updateLabel()
 	t.Execute(w, NextButton)
 }
 
@@ -200,28 +199,16 @@ func handlePrevButton(w http.ResponseWriter, r *http.Request) {
 	PreviousButton := r.FormValue("PreviousButton")
 	currentIndex--
 	if currentIndex <= len(artistsData.Array) {
-		currentIndex = -1
+		currentIndex = -5
 	}
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	updateLabel()
 	t.Execute(w, PreviousButton)
 }
 
-func updateLabel() {
-	selectedItem := artistsData.Array[currentIndex]
-	fmt.Printf("Element sélectionné : %s\n", selectedItem)
-}
 
-func getSelectedOption(value string, optionValue string) string {
-	if value == optionValue {
-		return "selected"
-	} else {
-		return ""
-	}
-}
 
 func searchHandler(w http.ResponseWriter, r *http.Request) {
 	indexString := r.FormValue("research")
@@ -272,6 +259,8 @@ func main() {
 	feedData()
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	http.HandleFunc("/", homeHandler)
+	http.HandleFunc("/next", handleNextButton)
+	http.HandleFunc("/prev", handlePrevButton)
 	http.HandleFunc("/artist", artistHandler)
 	http.HandleFunc("/search", searchHandler)
 	http.HandleFunc("/concert", concertHandler)
