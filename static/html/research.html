@@ -10,6 +10,11 @@
 </head>
 
 <body>
+    <datalist id="names">
+        {{range .Array}}
+        <option value="{{.Name}}">
+        {{end}}
+    </datalist>
     <div class="header">
         <section>
             <div class="header">
@@ -20,7 +25,7 @@
                 <div class="header-right">
                     <h1 class="h1-header">Groupie Tracker</h1>
                     <form action="/search">
-                        <input id="search-header" type="text" name="research" placeholder="rechercher.." autocomplete="off"/>
+                        <input id="search-header" type="text" name="research" placeholder="rechercher.." autocomplete="off" list="names"/>
                     </form>
                 </div>
             </div>

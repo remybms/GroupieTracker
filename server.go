@@ -152,7 +152,6 @@ func artistHandler(w http.ResponseWriter, r *http.Request) {
 	indexString := r.FormValue("card")
 	if indexString != "" {
 		index, _ = strconv.Atoi(indexString)
-
 	}
 	t, err := template.ParseFiles("./static/html/Artist.html")
 	if err != nil {

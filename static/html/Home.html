@@ -28,7 +28,7 @@
                 <div class="header-right">
                     <h1 class="h1-header">Groupie Tracker</h1>
                     <form action="/search">
-                        <input id="search-header" type="search" name="research" placeholder="rechercher.." list="names" />
+                        <input id="search-header" type="search" name="research" placeholder="rechercher.." autocomplete="off" list="names" />
                     </form>
                     <div id="suggestion"></div>
                 </div>
@@ -38,17 +38,6 @@
             </div>
         </section>
     </div>
-
-    <form action="/artist">
-        <select name="languages" id="lang">
-            <option value=""> > Artiste </option>
-            {{range .Array}}
-                <option value="{{.Id}}" name="artist">{{.Name}}</option>
-            {{end}}
-            <input type="submit" name="submit" value="Submit">
-        </select>
-    </form>
-    
     <div class="home-left">
         {{range .Array}}
         <form action="artist" method="post"> 
