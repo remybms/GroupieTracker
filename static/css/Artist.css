@@ -121,6 +121,7 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    align-items: center;
 }
 
 .members{
@@ -184,4 +185,79 @@ a {
     .header {
         flex-direction: column;
         align-items: last baseline
-    }}
+    }
+    .container1 {
+        display: flex;
+        margin: 1%;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .Location{
+        width: 55vw;
+        padding: 1%;
+        background-color: #110131;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 1vw;
+        color: white;
+        text-align: center;
+        font-size: 5vw;
+        margin-top: 10px;
+    }
+    .name {
+        width: 50vw;
+        padding: 5%;
+        background-color: #110131;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 1vw;
+        color: white;
+        text-align: center;
+        font-size: 5vw;
+    }
+    .CreationDate{
+        width: 50vw;
+        padding: 5%;
+        background-color: #110131;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 1vw;
+        color: white;
+        text-align: center;
+        font-size: 5vw;
+    }
+    .FirstAlbum{
+        width: 50vw;
+        padding: 5%;
+        background-color: #110131;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 1vw;
+        color: white;
+        text-align: center;
+        font-size: 5vw;
+    }
+    .members{
+        width: 50vw;
+        padding: 2%;
+        background-color: #110131;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 1vw;
+        color: white;
+        text-align: center;
+        font-size: 5vw;
+    }
+}
+
