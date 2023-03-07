@@ -177,38 +177,46 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, artistsDataPaginate)
 }
 
-var currentIndex int
+var currentIndex int = 0
+
 
 func handleNextButton(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("./static/html/Home.html")
-	NextButton := r.FormValue("NextButton")
-
-	currentIndex++
-	if currentIndex >= len(artistsData.Array) {
-		currentIndex = +5
-	}
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	t.Execute(w, NextButton)
+
+	NextButton := r.FormValue("NextButton")
+	if NextButton != "" {
+		currentIndex++
+		if currentIndex >= len(artistsData.Array) {
+			currentIndex = 0
+		}
+	}
+
+	artistsDataPaginate := artistsPaginate{Array: artistsData.Array[currentIndex : currentIndex+10]}
+	t.Execute(w, artistsDataPaginate)
 }
 
 func handlePrevButton(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("./static/html/Home.html")
-	PreviousButton := r.FormValue("PreviousButton")
-	currentIndex--
-	if currentIndex <= len(artistsData.Array) {
-		currentIndex = -5
-	}
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	t.Execute(w, PreviousButton)
+
+	PreviousButton := r.FormValue("PreviousButton")
+	if PreviousButton != "" {
+		currentIndex--
+		if currentIndex < 0 {
+			currentIndex = len(artistsData.Array) - 1
+		}
+	}
+
+	artistsDataPaginate := artistsPaginate{Array: artistsData.Array[currentIndex : currentIndex+10]}
+	t.Execute(w, artistsDataPaginate)
 }
-
-
 
 func searchHandler(w http.ResponseWriter, r *http.Request) {
 	indexString := r.FormValue("research")
