@@ -190,7 +190,8 @@ func handleNextButton(w http.ResponseWriter, r *http.Request) {
 	if (artistsDataPaginate.index) < len(artistsData.Array) {
 		artistsDataPaginate.Array = artistsData.Array[(artistsDataPaginate.index - artistsDataPaginate.value):artistsDataPaginate.index]
 	} else {
-		artistsDataPaginate.Array = artistsData.Array[(artistsDataPaginate.index - artistsDataPaginate.value):]
+		artistsDataPaginate.index -= artistsDataPaginate.value
+		artistsDataPaginate.Array = artistsData.Array[artistsDataPaginate.index:]
 	}
 	t.Execute(w, artistsDataPaginate)
 }
@@ -205,6 +206,7 @@ func handlePrevButton(w http.ResponseWriter, r *http.Request) {
 	if (artistsDataPaginate.index) > 0 {
 		artistsDataPaginate.Array = artistsData.Array[artistsDataPaginate.index:(artistsDataPaginate.index + artistsDataPaginate.value)]
 	} else {
+		artistsDataPaginate.index += artistsDataPaginate.value
 		artistsDataPaginate.Array = artistsData.Array[:artistsDataPaginate.value]
 	}
 	t.Execute(w, artistsDataPaginate)

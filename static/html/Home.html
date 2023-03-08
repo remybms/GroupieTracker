@@ -41,16 +41,16 @@
         </select>
         <input type="submit" value="afficher" />
     </form>
-    <form action="/next" method="post">
-        <input name="NextButton" type="submit" value="Suivant"/>
-    </form>
-    <form action="/next" method="post">
-        <input name="PreviousButton" type="submit" value="Précedent"/>
-    </form>
+        <form action="/next" method="post">
+            <input name="NextButton" type="submit" value="Suivant"/>
+        </form>
+        <form action="/prev" method="post">
+            <input name="PreviousButton" type="submit" value="Précedent"/>
+        </form>
     <div class="home-left">
         
         {{range .Array}}
-        <form action="artist" method="post"> 
+        <form action="artist" method="post">
             <button type="submit" value="{{.Id}}" name="card" class="home-left-block">
                 <img class="img" src="{{.Image}}" alt="" />
                 <div class="name">{{.Name}}</div>
