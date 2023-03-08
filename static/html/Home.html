@@ -30,7 +30,7 @@
             </div>
         </section>
     </div>
-    <form action="" method="post">
+    <form action="/Home" method="post">
         <select name="nb-items">
             <option value="52">All</option>
             <option value="5">5</option>
@@ -39,12 +39,13 @@
             <option value="20">20</option>
 
         </select>
-        <input name="NextButton" type="submit" value="Suivant"/>
-        <input name="PreviousButton" type="submit" value="Précedent"/>
-
         <input type="submit" value="afficher" />
     </form>
-    <form action="" method="post">
+    <form action="/next" method="post">
+        <input name="NextButton" type="submit" value="Suivant"/>
+    </form>
+    <form action="/prev" method="post">
+        <input name="PreviousButton" type="submit" value="Précedent"/>
     </form>
     <div class="home-left">
         

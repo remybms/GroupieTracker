@@ -62,6 +62,8 @@ type artistsArray struct {
 
 type artistsPaginate struct {
 	Array []artists
+	index int
+	value int
 }
 
 type concerts struct {
@@ -144,41 +146,35 @@ func feedData() {
 	Dates()
 }
 
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	var indexString string
-	var indexRange int = 0
-	var artistsDataPaginate artistsPaginate
-	t, err := template.ParseFiles("./static/html/Home.html")
-	nbItems := r.FormValue("nb-items")
-	if nbItems != "" {
-		indexString = nbItems
-	}
-	index, _ := strconv.Atoi(indexString)
-	if indexRange < index {
-		indexRange = 0
-	} else {
-		indexRange -= index
-	}
-	if indexString == "" {
-		artistsDataPaginate.Array = artistsData.Array
-	} else {
-		for nbItem := 0; nbItem < index; nbItem++ {
-			if indexRange < len(artistsData.Array) {
+var artistsDataPaginate artistsPaginate
 
-				artistsDataPaginate.Array = append(artistsDataPaginate.Array, artistsData.Array[indexRange])
-				indexRange++
-			}
-		}
-	}
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	t, err := template.ParseFiles("./static/html/Home.html")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+	t.Execute(w, artistsData)
+}
+func paginatehomeHandler(w http.ResponseWriter, r *http.Request) {
+	t, err := template.ParseFiles("./static/html/Home.html")
+	artistsDataPaginate.Array = artistsData.Array
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	nbItems := r.FormValue("nb-items")
+	if nbItems == "" {
+		nbItems = "52"
+	}
+	artistsDataPaginate.value, _ = strconv.Atoi(nbItems)
+	artistsDataPaginate.Array = artistsData.Array[:artistsDataPaginate.value]
+	artistsDataPaginate.index = artistsDataPaginate.value
+	fmt.Println(artistsDataPaginate.index)
 	t.Execute(w, artistsDataPaginate)
 }
 
 var currentIndex int = 0
-
 
 func handleNextButton(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("./static/html/Home.html")
@@ -186,16 +182,12 @@ func handleNextButton(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
-
-	NextButton := r.FormValue("NextButton")
-	if NextButton != "" {
-		currentIndex++
-		if currentIndex >= len(artistsData.Array) {
-			currentIndex = 0
-		}
+	artistsDataPaginate.index += artistsDataPaginate.value
+	if (artistsDataPaginate.index) < len(artistsData.Array) {
+		artistsDataPaginate.Array = artistsData.Array[(artistsDataPaginate.index - artistsDataPaginate.value):artistsDataPaginate.index]
+	} else {
+		artistsDataPaginate.Array = artistsData.Array[(artistsDataPaginate.index - artistsDataPaginate.value):]
 	}
-
-	artistsDataPaginate := artistsPaginate{Array: artistsData.Array[currentIndex : currentIndex+10]}
 	t.Execute(w, artistsDataPaginate)
 }
 
@@ -205,6 +197,7 @@ func handlePrevButton(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
+	fmt.Println("dans l'autre")
 
 	PreviousButton := r.FormValue("PreviousButton")
 	if PreviousButton != "" {
@@ -266,6 +259,7 @@ func main() {
 	fmt.Println("http://localhost:8080")
 	feedData()
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	http.HandleFunc("/Home", paginatehomeHandler)
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/next", handleNextButton)
 	http.HandleFunc("/prev", handlePrevButton)
