@@ -29,6 +29,14 @@ img {
     font-weight: 60px;
     text-align:left;
 }
+.NextButton{
+    margin-right: 10px;
+}
+.PrevButton ,.NextButton{
+    background-color: #fff;
+    padding: 0.5%;
+    border-radius: 10px;
+}
 
 .header-right {
     display: flex;
@@ -67,6 +75,7 @@ a {
     gap: 20px;
     height: auto;
 }
+
 
 .home-left-block {
     width: 200px;

@@ -154,8 +154,11 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
+	artistsDataPaginate.value = 52
+	artistsDataPaginate.index = 0
 	t.Execute(w, artistsData)
 }
+
 func paginatehomeHandler(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("./static/html/Home.html")
 	artistsDataPaginate.Array = artistsData.Array
@@ -164,9 +167,6 @@ func paginatehomeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	nbItems := r.FormValue("nb-items")
-	if nbItems == "" {
-		nbItems = "52"
-	}
 	artistsDataPaginate.value, _ = strconv.Atoi(nbItems)
 	artistsDataPaginate.Array = artistsData.Array[:artistsDataPaginate.value]
 	artistsDataPaginate.index = artistsDataPaginate.value
@@ -174,16 +174,10 @@ func paginatehomeHandler(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, artistsDataPaginate)
 }
 
-var currentIndex int = 0
-
 func handleNextButton(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("./static/html/Home.html")
 	if err != nil {
 		fmt.Println(err)
-		return
-	}
-	if artistsDataPaginate.value == 52 {
-		t.Execute(w, artistsData)
 		return
 	}
 	artistsDataPaginate.index += artistsDataPaginate.value
