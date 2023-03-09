@@ -30,7 +30,7 @@
             </div>
         </section>
         <div class="page">
-            <form action="/Home" method="post">
+            <form action="/" method="post">
                 <select name="nb-items">
                     <option value="52">All</option>
                     <option value="5">5</option>
@@ -38,18 +38,14 @@
                     <option value="15">15</option>
                     <option value="20">20</option>
                 </select>
-                <input type="submit" value="afficher" />
-            </form>
+                <input name="Button" type="submit" value="afficher" />
         </div>
     </div>
     <div class="button">
-        <form action="/next" method="post">
-            <input name="NextButton" type="submit" class="NextButton" value="Suivant >"/>
-        </form>
-        <form action="/prev" method="post">
-            <input name="PreviousButton" type="submit"class="PrevButton" value="< Précedent"/>
-        </form>
+        <input name="PrevButton" type="submit" value="Précedent"/>
+        <input name="NextButton" type="submit" value="Suivant"/>
     </div>
+    </form>
     <div class="home-left">
         
         {{range .Array}}

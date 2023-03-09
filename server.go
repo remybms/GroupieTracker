@@ -148,38 +148,43 @@ func feedData() {
 
 var artistsDataPaginate artistsPaginate
 
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("./static/html/Home.html")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	artistsDataPaginate.value = 52
-	artistsDataPaginate.index = 0
-	t.Execute(w, artistsData)
-}
-
 func paginatehomeHandler(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("./static/html/Home.html")
-	artistsDataPaginate.Array = artistsData.Array
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	nbItems := r.FormValue("nb-items")
+	page_begin := r.FormValue("Button")
+	page_Next := r.FormValue("NextButton")
+	page_Prev := r.FormValue("PrevButton")
+	if page_begin == "afficher" {
+		nbItems := r.FormValue("nb-items")
+		First(nbItems)
+		t.Execute(w, artistsDataPaginate)
+	} else if page_Next == "Suivant" {
+		if artistsDataPaginate.value == 52 {
+			t.Execute(w, artistsData)
+		}
+		Next()
+		t.Execute(w, artistsDataPaginate)
+	} else if page_Prev == "Précedent" {
+		if artistsDataPaginate.value == 52 {
+			t.Execute(w, artistsData)
+		}
+		Prev()
+		t.Execute(w, artistsDataPaginate)
+	} else {
+		t.Execute(w, artistsData)
+	}
+}
+
+func First(nbItems string) {
+	artistsDataPaginate.Array = artistsData.Array
 	artistsDataPaginate.value, _ = strconv.Atoi(nbItems)
 	artistsDataPaginate.Array = artistsData.Array[:artistsDataPaginate.value]
 	artistsDataPaginate.index = artistsDataPaginate.value
-	fmt.Println(artistsDataPaginate.index)
-	t.Execute(w, artistsDataPaginate)
 }
-
-func handleNextButton(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("./static/html/Home.html")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+func Next() {
 	artistsDataPaginate.index += artistsDataPaginate.value
 	if (artistsDataPaginate.index) < len(artistsData.Array) {
 		artistsDataPaginate.Array = artistsData.Array[(artistsDataPaginate.index - artistsDataPaginate.value):artistsDataPaginate.index]
@@ -187,15 +192,8 @@ func handleNextButton(w http.ResponseWriter, r *http.Request) {
 		artistsDataPaginate.index -= artistsDataPaginate.value
 		artistsDataPaginate.Array = artistsData.Array[artistsDataPaginate.index:]
 	}
-	t.Execute(w, artistsDataPaginate)
 }
-
-func handlePrevButton(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("./static/html/Home.html")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+func Prev() {
 	artistsDataPaginate.index -= artistsDataPaginate.value
 	if (artistsDataPaginate.index) > 0 {
 		artistsDataPaginate.Array = artistsData.Array[artistsDataPaginate.index:(artistsDataPaginate.index + artistsDataPaginate.value)]
@@ -203,7 +201,6 @@ func handlePrevButton(w http.ResponseWriter, r *http.Request) {
 		artistsDataPaginate.index += artistsDataPaginate.value
 		artistsDataPaginate.Array = artistsData.Array[:artistsDataPaginate.value]
 	}
-	t.Execute(w, artistsDataPaginate)
 }
 
 func searchHandler(w http.ResponseWriter, r *http.Request) {
@@ -254,10 +251,10 @@ func main() {
 	fmt.Println("http://localhost:8080")
 	feedData()
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	http.HandleFunc("/Home", paginatehomeHandler)
-	http.HandleFunc("/", homeHandler)
-	http.HandleFunc("/next", handleNextButton)
-	http.HandleFunc("/prev", handlePrevButton)
+	http.HandleFunc("/", paginatehomeHandler)
+	// http.HandleFunc("/", homeHandler)
+	// http.HandleFunc("/next", handleNextButton)
+	// http.HandleFunc("/prev", handlePrevButton)
 	http.HandleFunc("/artist", artistHandler)
 	http.HandleFunc("/search", searchHandler)
 	http.HandleFunc("/concert", concertHandler)
