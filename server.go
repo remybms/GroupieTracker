@@ -96,11 +96,26 @@ func feedData() {
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
-	artistsDataTri := artistsData
 	tri := r.FormValue("tri")
 	if tri == "creationDate" {
-		sort.Slice(artistsDataTri, func(i, j int) bool {
-			return artistsDataTri.Array[i].CreationDate < artistsDataTri.Array[j].CreationDate
+		sort.Slice(artistsData.Array[:], func(i, j int) bool {
+			return artistsData.Array[i].CreationDate < artistsData.Array[j].CreationDate
+		})
+	} else if tri == "id" {
+		sort.Slice(artistsData.Array[:], func(i, j int) bool {
+			return artistsData.Array[i].Id < artistsData.Array[j].Id
+		})
+	} else if tri == "a-z" {
+		sort.Slice(artistsData.Array[:], func(i, j int) bool {
+			return artistsData.Array[i].Name < artistsData.Array[j].Name
+		})
+	} else if tri == "z-a" {
+		sort.Slice(artistsData.Array[:], func(i, j int) bool {
+			return artistsData.Array[i].Name > artistsData.Array[j].Name
+		})
+	} else if tri == "reverseCreationDate" {
+		sort.Slice(artistsData.Array[:], func(i, j int) bool {
+			return artistsData.Array[i].CreationDate > artistsData.Array[j].CreationDate
 		})
 	}
 	t, err := template.ParseFiles("./static/html/Home.html")
@@ -108,7 +123,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
-	t.Execute(w, artistsDataTri)
+	t.Execute(w, artistsData)
 
 }
 
@@ -161,6 +176,9 @@ func artistHandler(w http.ResponseWriter, r *http.Request) {
 	if indexString != "" {
 		index, _ = strconv.Atoi(indexString)
 	}
+	sort.Slice(artistsData.Array[:], func(i, j int) bool {
+		return artistsData.Array[i].Id < artistsData.Array[j].Id
+	})
 	t, err := template.ParseFiles("./static/html/Artist.html")
 	if err != nil {
 		fmt.Println(err)

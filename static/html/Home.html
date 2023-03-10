@@ -38,12 +38,15 @@
             </div>
         </section>
     </div>
-    <form action="">
+    <form action="" method="post">
         <select name="tri" id="tri">
-            <option value="creationDate">date de création</option>
-            <option value="id">reset</option>
+            <option value="id">id</option>
+            <option value="a-z">A-Z</option>
+            <option value="z-a">Z-A</option>
+            <option value="creationDate">date de création (plus ancien au plus récent)</option>
+            <option value="reverseCreationDate">date de création (plus récent au plus ancien)</option>
         </select>
-        <input type="sumbit">
+        <input type="submit" value="afficher" />
     </form>
     <div class="home-left">
         {{range .Array}}
