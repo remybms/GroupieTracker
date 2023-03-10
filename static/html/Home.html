@@ -14,12 +14,12 @@
         <section>
             <div class="header">
                 <div class="header-left">
-                    <a class="active" href="/"><img
+                    <a name="home" class="active" href="/"><img
                             src="https://tracedat.com/wp-content/uploads/2020/11/home-300x300.png"></img></a>
                 </div>
                 <div class="header-right">
                     <h1 class="h1-header">Groupie Tracker</h1>
-                    <form action="/search" method="get">
+                    <form action="/search">
                         <input type="text" name="search"/>
                         <input type="submit" value="Search">
                     </form>
@@ -30,7 +30,7 @@
             </div>
         </section>
         <div class="page">
-            <form action="/" method="post">
+            <form action="/">
                 <select name="nb-items">
                     <option value="52">All</option>
                     <option value="5">5</option>
@@ -39,12 +39,14 @@
                     <option value="20">20</option>
                 </select>
                 <input name="Button" type="submit" value="afficher" />
+            </form>
         </div>
     </div>
-    <div class="button">
-        <input name="PrevButton" type="submit" value="Précedent"/>
-        <input name="NextButton" type="submit" value="Suivant"/>
-    </div>
+    <form action="/">
+        <div class="button">
+            <input name="PrevButton" type="submit" value="Précedent"/>
+            <input name="NextButton" type="submit" value="Suivant"/>
+        </div>
     </form>
     <div class="home-left">
         

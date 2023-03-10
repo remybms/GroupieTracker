@@ -64,6 +64,7 @@ type artistsPaginate struct {
 	Array []artists
 	index int
 	value int
+	flag  bool
 }
 
 type concerts struct {
@@ -157,24 +158,32 @@ func paginatehomeHandler(w http.ResponseWriter, r *http.Request) {
 	page_begin := r.FormValue("Button")
 	page_Next := r.FormValue("NextButton")
 	page_Prev := r.FormValue("PrevButton")
-	if page_begin == "afficher" {
-		nbItems := r.FormValue("nb-items")
-		First(nbItems)
-	} else if page_Next == "Suivant" {
-		if artistsDataPaginate.value == 52 || artistsDataPaginate.value == 0 {
-			t.Execute(w, artistsData)
+	if len(page_begin) > 0 || len(page_Next) > 0 || len(page_Prev) > 0 {
+		if page_begin == "afficher" {
+			nbItems := r.FormValue("nb-items")
+			First(nbItems)
+			artistsDataPaginate.flag = true
+			t.Execute(w, artistsDataPaginate)
+		} else if page_Next == "Suivant" {
+			if artistsDataPaginate.value != 52 && artistsDataPaginate.value != 0 {
+				Next()
+				t.Execute(w, artistsDataPaginate)
+			} else {
+				t.Execute(w, artistsData)
+			}
+			artistsDataPaginate.flag = true
+		} else if page_Prev == "Précedent" {
+			if artistsDataPaginate.value != 52 && artistsDataPaginate.value != 0 {
+				Prev()
+				t.Execute(w, artistsDataPaginate)
+			} else {
+				t.Execute(w, artistsData)
+			}
+			artistsDataPaginate.flag = false
 		}
-		Next()
-	} else if page_Prev == "Précedent" {
-		if artistsDataPaginate.value == 52 || artistsDataPaginate.value == 0 {
-			t.Execute(w, artistsData)
-		}
-		Prev()
-	} else if page_Prev != "Précedent" && page_Next != "Suivant" && page_begin != "afficher" {
-		artistsDataPaginate.value = 0
+	} else {
 		t.Execute(w, artistsData)
 	}
-	t.Execute(w, artistsDataPaginate)
 }
 
 func First(nbItems string) {
@@ -183,7 +192,11 @@ func First(nbItems string) {
 	artistsDataPaginate.index = artistsDataPaginate.value
 }
 func Next() {
-	artistsDataPaginate.index += artistsDataPaginate.value
+	if artistsDataPaginate.flag {
+		artistsDataPaginate.index += artistsDataPaginate.value
+	} else {
+		artistsDataPaginate.index += (artistsDataPaginate.value * 2)
+	}
 	if (artistsDataPaginate.index) < len(artistsData.Array) {
 		artistsDataPaginate.Array = artistsData.Array[(artistsDataPaginate.index - artistsDataPaginate.value):artistsDataPaginate.index]
 	} else {
@@ -191,8 +204,13 @@ func Next() {
 		artistsDataPaginate.Array = artistsData.Array[artistsDataPaginate.index:]
 	}
 }
+
 func Prev() {
-	artistsDataPaginate.index -= artistsDataPaginate.value
+	if !artistsDataPaginate.flag {
+		artistsDataPaginate.index -= artistsDataPaginate.value
+	} else {
+		artistsDataPaginate.index -= (artistsDataPaginate.value * 2)
+	}
 	if (artistsDataPaginate.index) > 0 {
 		artistsDataPaginate.Array = artistsData.Array[artistsDataPaginate.index:(artistsDataPaginate.index + artistsDataPaginate.value)]
 	} else {
