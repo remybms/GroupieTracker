@@ -149,7 +149,7 @@ func feedData() {
 
 var artistsDataPaginate artistsPaginate
 
-func paginatehomeHandler(w http.ResponseWriter, r *http.Request) {
+func homeHandler(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("./static/html/Home.html")
 	if err != nil {
 		fmt.Println(err)
@@ -267,7 +267,7 @@ func main() {
 	fmt.Println("http://localhost:8080")
 	feedData()
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	http.HandleFunc("/", paginatehomeHandler)
+	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/artist", artistHandler)
 	http.HandleFunc("/search", searchHandler)
 	http.HandleFunc("/concert", concertHandler)
