@@ -95,29 +95,33 @@ func feedData() {
 	Relation()
 }
 
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	tri := r.FormValue("tri")
-	if tri == "creationDate" {
+func defineOrder(order string) {
+	if order == "creationDate" {
 		sort.Slice(artistsData.Array[:], func(i, j int) bool {
 			return artistsData.Array[i].CreationDate < artistsData.Array[j].CreationDate
 		})
-	} else if tri == "id" {
+	} else if order == "id" {
 		sort.Slice(artistsData.Array[:], func(i, j int) bool {
 			return artistsData.Array[i].Id < artistsData.Array[j].Id
 		})
-	} else if tri == "a-z" {
+	} else if order == "a-z" {
 		sort.Slice(artistsData.Array[:], func(i, j int) bool {
 			return artistsData.Array[i].Name < artistsData.Array[j].Name
 		})
-	} else if tri == "z-a" {
+	} else if order == "z-a" {
 		sort.Slice(artistsData.Array[:], func(i, j int) bool {
 			return artistsData.Array[i].Name > artistsData.Array[j].Name
 		})
-	} else if tri == "reverseCreationDate" {
+	} else if order == "reverseCreationDate" {
 		sort.Slice(artistsData.Array[:], func(i, j int) bool {
 			return artistsData.Array[i].CreationDate > artistsData.Array[j].CreationDate
 		})
 	}
+}
+
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	tri := r.FormValue("tri")
+	defineOrder(tri)
 	t, err := template.ParseFiles("./static/html/Home.html")
 	if err != nil {
 		fmt.Println(err)
