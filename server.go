@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -95,12 +96,19 @@ func feedData() {
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
+	artistsDataTri := artistsData
+	tri := r.FormValue("tri")
+	if tri == "creationDate" {
+		sort.Slice(artistsDataTri, func(i, j int) bool {
+			return artistsDataTri.Array[i].CreationDate < artistsDataTri.Array[j].CreationDate
+		})
+	}
 	t, err := template.ParseFiles("./static/html/Home.html")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	t.Execute(w, artistsData)
+	t.Execute(w, artistsDataTri)
 
 }
 
