@@ -94,7 +94,15 @@ a{
     }
     .ariane{
         color: #fff;
-        display:none;
+        display: flex;
+        margin-left: 10%;
+    }
+}
+
+@media only screen and (max-width: 568px){
+    .ariane{
+        color: #fff;
+        display: none;
         margin-left: 10%;
     }
 }
