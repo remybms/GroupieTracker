@@ -94,8 +94,7 @@ a{
     }
     .ariane{
         color: #fff;
-        display: flex;
-        flex-direction: column;
+        display:none;
         margin-left: 10%;
     }
 }
