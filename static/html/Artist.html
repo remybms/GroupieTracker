@@ -21,28 +21,59 @@
                 </div>
                 <div class="ariane">
                     <a href="/">Home</a>
-                    >
+                    <div class="arianeSeparator"> > </div>
                     <a href="/artist">{{.Name}}</a>
                 </div>
             </div>
         </section>
     </div>
 
-   
+   <div class ="container1">
 
-    <img class="img" src="{{.Image}}" alt="" />
-    <div class="name"> Nom de l'auteur : {{.Name}}</div>
-    <div class="members">Membre du groupe : {{.Members}}</div>
-    <div class="CreationDate">Creation du groupe {{.CreationDate}}</div>
-    <div class="FirstAlbum">Premier album sortie en : {{.FirstAlbum}}</div>
-    <div class="Location">Informations suplémentaires
-    <form action="concert" method="post"> 
-        <button type="submit" value="{{.Id}}" name="dates" class="home-left-block">
-            <div class="test">Concerts en approche</div>
-        </button></div>
-    </form>
+        <img class="img-groupe" src="{{.Image}}" alt="" />
+
+        <div class="left">
+            <div class="name"> 
+                <div>
+                    Nom d'artiste :
+                </div> 
+                <div>
+                    {{.Name}}
+                </div>
+            </div>
+            <div class="CreationDate">
+                <div>Année de création : </div>
+                <div>{{.CreationDate}}</div>
+            </div>
+            <div class="FirstAlbum">
+                <div>Date du premier album : </div>
+                <div>{{.FirstAlbum}}</div>
+            </div>
+        </div>
+    
+        <div class="members">
+            <div>
+                Nom complet du ou des membres : 
+            </div> <br>
+            {{range $index, $members := .Members}}
+            <div>
+                {{$members}}
+            </div>
+            
+            {{end}}
+        </div>
+    </div>
+    <div class ="container2">
+        
+        <div class="Location">Informations suplémentaires
+            <form action="concert" method="post"> 
+                <button type="submit" value="{{.Id}}" name="dates" class="home-left-block">
+                    <div class="test">Concerts en approche</div>
+                </button>
+            </form>
+        </div>
     <!-- <div class="ConcertDates">Date du prochain concert : {{.ConcertDates}}</div> -->
     <!-- <div class="Relations">Relation {{.Relations}}</div> -->
-</div>
+
 </body>
 </html>

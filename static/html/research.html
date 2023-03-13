@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="http://localhost:8080/static/css/Home.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groupie Tracker</title>
+</head>
+
+<body>
+    <datalist id="names">
+        {{range .Array}}
+        <option value="{{.Name}}">
+        {{end}}
+    </datalist>
+    <div class="header">
+        <section>
+            <div class="header">
+                <div class="header-left">
+                    <a class="active" href="/"><img
+                            src="https://tracedat.com/wp-content/uploads/2020/11/home-300x300.png"></img></a>
+                </div>
+                <div class="header-right">
+                    <h1 class="h1-header">Groupie Tracker</h1>
+                    <form action="/search">
+                        <input id="search-header" type="text" name="research" placeholder="rechercher.." autocomplete="off" list="names"/>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+    {{if .Flag}}
+    <div class="home-left">
+        {{range .Valid}}
+        <form action="artist" method="post"> 
+            <button type="submit" value="{{.Id}}" name="card" class="home-left-block">
+                <img class="img" src="{{.Image}}" alt="" />
+                <div class="name">{{.Name}}</div>
+            </button>
+        </form>
+        {{end}}
+    </div>
+    {{else}}
+        <form action="artist" method="post"> 
+            <p>L'artiste que vous cherchez n'existe pas !!</p>
+        </form>
+    {{end}}
+
+</body>
+
+</html>
