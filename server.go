@@ -62,6 +62,7 @@ type artistsArray struct {
 	Flag  bool
 }
 
+
 var Maps ForBingAPI
 var coordinatesMap coordinates
 var artistsData artistsArray
@@ -151,6 +152,8 @@ func defineOrder(order string) {
 	}
 }
 
+var artistsDataPaginate artistsPaginate
+
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	tri := r.FormValue("tri")
 	defineOrder(tri)
@@ -159,8 +162,68 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
-	t.Execute(w, artistsData)
+	page_begin := r.FormValue("Button")
+	page_Next := r.FormValue("NextButton")
+	page_Prev := r.FormValue("PrevButton")
+	if len(page_begin) > 0 || len(page_Next) > 0 || len(page_Prev) > 0 {
+		if page_begin == "afficher" {
+			nbItems := r.FormValue("nb-items")
+			First(nbItems)
+			artistsDataPaginate.flag = true
+			t.Execute(w, artistsDataPaginate)
+		} else if page_Next == "Suivant" {
+			if artistsDataPaginate.value != 52 && artistsDataPaginate.value != 0 {
+				Next()
+				t.Execute(w, artistsDataPaginate)
+			} else {
+				t.Execute(w, artistsData)
+			}
+			artistsDataPaginate.flag = true
+		} else if page_Prev == "Précedent" {
+			if artistsDataPaginate.value != 52 && artistsDataPaginate.value != 0 {
+				Prev()
+				t.Execute(w, artistsDataPaginate)
+			} else {
+				t.Execute(w, artistsData)
+			}
+			artistsDataPaginate.flag = false
+		}
+	} else {
+		t.Execute(w, artistsData)
+	}
+}
 
+func First(nbItems string) {
+	artistsDataPaginate.value, _ = strconv.Atoi(nbItems)
+	artistsDataPaginate.Array = artistsData.Array[:artistsDataPaginate.value]
+	artistsDataPaginate.index = artistsDataPaginate.value
+}
+func Next() {
+	if artistsDataPaginate.flag {
+		artistsDataPaginate.index += artistsDataPaginate.value
+	} else {
+		artistsDataPaginate.index += (artistsDataPaginate.value * 2)
+	}
+	if (artistsDataPaginate.index) < len(artistsData.Array) {
+		artistsDataPaginate.Array = artistsData.Array[(artistsDataPaginate.index - artistsDataPaginate.value):artistsDataPaginate.index]
+	} else {
+		artistsDataPaginate.index -= artistsDataPaginate.value
+		artistsDataPaginate.Array = artistsData.Array[artistsDataPaginate.index:]
+	}
+}
+
+func Prev() {
+	if !artistsDataPaginate.flag {
+		artistsDataPaginate.index -= artistsDataPaginate.value
+	} else {
+		artistsDataPaginate.index -= (artistsDataPaginate.value * 2)
+	}
+	if (artistsDataPaginate.index) > 0 {
+		artistsDataPaginate.Array = artistsData.Array[artistsDataPaginate.index:(artistsDataPaginate.index + artistsDataPaginate.value)]
+	} else {
+		artistsDataPaginate.index += artistsDataPaginate.value
+		artistsDataPaginate.Array = artistsData.Array[:artistsDataPaginate.value]
+	}
 }
 
 func searchHandler(w http.ResponseWriter, r *http.Request) {
