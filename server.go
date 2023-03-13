@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -126,7 +127,33 @@ func feedData() {
 	Relation()
 }
 
+func defineOrder(order string) {
+	if order == "creationDate" {
+		sort.Slice(artistsData.Array[:], func(i, j int) bool {
+			return artistsData.Array[i].CreationDate < artistsData.Array[j].CreationDate
+		})
+	} else if order == "id" {
+		sort.Slice(artistsData.Array[:], func(i, j int) bool {
+			return artistsData.Array[i].Id < artistsData.Array[j].Id
+		})
+	} else if order == "a-z" {
+		sort.Slice(artistsData.Array[:], func(i, j int) bool {
+			return artistsData.Array[i].Name < artistsData.Array[j].Name
+		})
+	} else if order == "z-a" {
+		sort.Slice(artistsData.Array[:], func(i, j int) bool {
+			return artistsData.Array[i].Name > artistsData.Array[j].Name
+		})
+	} else if order == "reverseCreationDate" {
+		sort.Slice(artistsData.Array[:], func(i, j int) bool {
+			return artistsData.Array[i].CreationDate > artistsData.Array[j].CreationDate
+		})
+	}
+}
+
 func homeHandler(w http.ResponseWriter, r *http.Request) {
+	tri := r.FormValue("tri")
+	defineOrder(tri)
 	t, err := template.ParseFiles("./static/html/Home.html")
 	if err != nil {
 		fmt.Println(err)
@@ -199,6 +226,9 @@ func artistHandler(w http.ResponseWriter, r *http.Request) {
 	if indexString != "" {
 		index, _ = strconv.Atoi(indexString)
 	}
+	sort.Slice(artistsData.Array[:], func(i, j int) bool {
+		return artistsData.Array[i].Id < artistsData.Array[j].Id
+	})
 	t, err := template.ParseFiles("./static/html/Artist.html")
 	if err != nil {
 		fmt.Println(err)
