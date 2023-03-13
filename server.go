@@ -38,6 +38,22 @@ type ExtractRelation struct {
 	Index []relation `json:"index"`
 }
 
+type ForBingAPI struct {
+	ResourceSets []struct {
+		Resources []struct {
+			Point struct {
+				Coordinates []float64
+			}
+		}
+	}
+}
+
+type coordinates struct {
+	Name      string
+	Latitude  float64
+	Longitude float64
+}
+
 type artistsArray struct {
 	*artists
 	Array []artists
@@ -45,6 +61,8 @@ type artistsArray struct {
 	Flag  bool
 }
 
+var Maps ForBingAPI
+var coordinatesMap coordinates
 var artistsData artistsArray
 var concertsData ExtractRelation
 
@@ -57,6 +75,20 @@ func Artists() {
 	//fmt.Println(string(body))
 	err := json.Unmarshal([]byte(body), &artistsData.Array)
 
+	if err != nil {
+		fmt.Println("Error :", err)
+		return
+	}
+	defer res.Body.Close()
+}
+
+func Map(location string) {
+	url := fmt.Sprintf("https://dev.virtualearth.net/REST/v1/Locations?q=%s&key=%s", location, "AlBlNdfGSHdDQO7QSc9vamIHHUD6c0VArZIZ9i3l-F9J4whlFM9Fz3ZMxE1t_lMh")
+	req, _ := http.NewRequest("GET", url, nil)
+	res, _ := http.DefaultClient.Do(req)
+	body, _ := ioutil.ReadAll(res.Body)
+	//fmt.Println(string(body))
+	err := json.Unmarshal([]byte(body), &Maps)
 	if err != nil {
 		fmt.Println("Error :", err)
 		return
@@ -148,6 +180,20 @@ func concertHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func mapHandler(w http.ResponseWriter, r *http.Request) {
+	location := r.FormValue("location")
+	Map(location)
+	t, err := template.ParseFiles("./static/html/Map.html")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	coordinatesMap.Name = string(artistsData.Array[index-1].Name)
+	coordinatesMap.Latitude = Maps.ResourceSets[0].Resources[0].Point.Coordinates[0]
+	coordinatesMap.Longitude = Maps.ResourceSets[0].Resources[0].Point.Coordinates[1]
+	t.Execute(w, coordinatesMap)
+}
+
 func artistHandler(w http.ResponseWriter, r *http.Request) {
 	indexString := r.FormValue("card")
 	if indexString != "" {
@@ -170,6 +216,7 @@ func main() {
 	http.HandleFunc("/artist", artistHandler)
 	http.HandleFunc("/search", searchHandler)
 	http.HandleFunc("/concert", concertHandler)
+	http.HandleFunc("/map", mapHandler)
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}
