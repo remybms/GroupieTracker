@@ -59,9 +59,10 @@ type artistsArray struct {
 	*artists
 	Array []artists
 	Valid []artists
-	Flag  bool
+	index int
+	value int
+	flag  bool
 }
-
 
 var Maps ForBingAPI
 var coordinatesMap coordinates
@@ -152,7 +153,7 @@ func defineOrder(order string) {
 	}
 }
 
-var artistsDataPaginate artistsPaginate
+var artistsDataPaginate artistsArray
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	tri := r.FormValue("tri")
@@ -231,7 +232,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 	artistsData.artists = &artistsData.Array[0]
 	indexString := r.FormValue("research")
 	artistsData.Valid = []artists{}
-	artistsData.Flag = false
+	artistsData.flag = false
 	t, err := template.ParseFiles("./static/html/research.html")
 	if err != nil {
 		fmt.Println(err)
@@ -242,7 +243,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		str := strings.ToLower(indexString)
 		if strings.Contains(val, str) {
 			artistsData.Valid = append(artistsData.Valid, value)
-			artistsData.Flag = true
+			artistsData.flag = true
 		}
 	}
 	t.Execute(w, artistsData)
