@@ -70,7 +70,7 @@ type artistsArray struct {
 	Valid []artists
 	index int
 	value int
-	flag  bool
+	Flag  bool
 }
 
 var Maps ForBingAPI
@@ -179,7 +179,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		if page_begin == "afficher" {
 			nbItems := r.FormValue("nb-items")
 			First(nbItems)
-			artistsDataPaginate.flag = true
+			artistsDataPaginate.Flag = true
 			t.Execute(w, artistsDataPaginate)
 		} else if page_Next == "Suivant" {
 			if artistsDataPaginate.value != 52 && artistsDataPaginate.value != 0 {
@@ -188,7 +188,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 			} else {
 				t.Execute(w, artistsData)
 			}
-			artistsDataPaginate.flag = true
+			artistsDataPaginate.Flag = true
 		} else if page_Prev == "Précedent" {
 			if artistsDataPaginate.value != 52 && artistsDataPaginate.value != 0 {
 				Prev()
@@ -196,7 +196,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 			} else {
 				t.Execute(w, artistsData)
 			}
-			artistsDataPaginate.flag = false
+			artistsDataPaginate.Flag = false
 		}
 	} else {
 		t.Execute(w, artistsData)
@@ -227,7 +227,7 @@ func First(nbItems string) {
 }
 
 func Next() {
-	if artistsDataPaginate.flag {
+	if artistsDataPaginate.Flag {
 		artistsDataPaginate.index += artistsDataPaginate.value
 	} else {
 		artistsDataPaginate.index += (artistsDataPaginate.value * 2)
@@ -241,7 +241,7 @@ func Next() {
 }
 
 func Prev() {
-	if !artistsDataPaginate.flag {
+	if !artistsDataPaginate.Flag {
 		artistsDataPaginate.index -= artistsDataPaginate.value
 	} else {
 		artistsDataPaginate.index -= (artistsDataPaginate.value * 2)
@@ -259,7 +259,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 	artistsData.artists = &artistsData.Array[0]
 	indexString := r.FormValue("research")
 	artistsData.Valid = []artists{}
-	artistsData.flag = false
+	artistsData.Flag = false
 	t, err := template.ParseFiles("./static/html/research.html")
 	if err != nil {
 		fmt.Println(err)
@@ -270,7 +270,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		str := strings.ToLower(indexString)
 		if strings.Contains(val, str) {
 			artistsData.Valid = append(artistsData.Valid, value)
-			artistsData.flag = true
+			artistsData.Flag = true
 		}
 	}
 	t.Execute(w, artistsData)
