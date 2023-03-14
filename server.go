@@ -204,14 +204,15 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func deezer() {
-	url := fmt.Sprintf("https://api.deezer.com/search/artist/?q=%s&index=0&limit=2&output=json", artistsData.Array[index-1].Name)
+	nameReplace := strings.ReplaceAll(artistsData.Array[index-1].Name, " ", "")
+	url := fmt.Sprintf("https://api.deezer.com/search/artist/?q=%s&index=0&limit=2&output=json", nameReplace)
 	req, _ := http.NewRequest("GET", url, nil)
 	res, _ := http.DefaultClient.Do(req)
 	body, _ := ioutil.ReadAll(res.Body)
 	//fmt.Println(string(body))
 	err := json.Unmarshal([]byte(body), &extractDeezerId)
 	if err != nil {
-		fmt.Println("Error :", err)
+		fmt.Println("Error1 :", err)
 		return
 	}
 	artistsData.Array[index-1].IdDeezer = extractDeezerId.Data[0].Id
