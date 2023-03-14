@@ -21,7 +21,7 @@ type artists struct {
 	Location     string   `json:"location"`
 	ConcertDates string   `json:"concertDates"`
 	Relations    string   `json:"relations"`
-	idDeezer     int
+	IdDeezer     int
 }
 
 type relation struct {
@@ -219,8 +219,8 @@ func deezer() {
 		fmt.Println("Error :", err)
 		return
 	}
-	artistsData.Array[index-1].idDeezer = extractDeezerId.Data[0].Id
-	fmt.Println(artistsData.Array[index-1].idDeezer)
+	artistsData.Array[index-1].IdDeezer = extractDeezerId.Data[0].Id
+	fmt.Println(artistsData.Array[index-1].IdDeezer)
 	defer res.Body.Close()
 }
 
