@@ -26,25 +26,13 @@
                         <a href="/concert" class="arianeLink">Concerts</a>
                     </div>
                 </div>
-
+                
             </div>
         </section>
     </div>
-    
-    <div class="test">
-        {{range $index, $location := .Location}}
-        <form action="/map">
-            <button type="submit" value="{{$location}}" name="location" class="card">
-                {{$location}} :
-                {{range $dates := index $.Dates $index}}
-                <div class="dates">
-                    {{$dates}}
-                </div>
-                {{end}}
-            </button>
-        {{end}}
-        </form>
-        
+    <div class="map">
+        <iframe src="https://embed.waze.com/iframe?zoom=12&lat={{.Latitude}}&lon={{.Longitude}}" width="80%" height="600"></iframe>
     </div>
+
 </body>
 </html>

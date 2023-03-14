@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -29,6 +30,7 @@ type relation struct {
 	DatesLocations map[string][]string
 }
 
+
 type Deezer struct {
 	Id int
 }
@@ -37,51 +39,47 @@ type extractDeezer struct {
 	Data []Deezer
 }
 
-type locations struct {
-	Id        int
-	Locations []string
-	Dates     string
-}
-
 type rangeRelation struct {
+	Name     string
 	Location []string
 	Dates    [][]string
-}
-
-type dates struct {
-	Id    int
-	Dates []string
-}
-
-type ExtractDate struct {
-	Index []dates `json:"index"`
-}
-
-type ExtractLocation struct {
-	Index []locations `json:"index"`
 }
 
 type ExtractRelation struct {
 	Index []relation `json:"index"`
 }
 
+type ForBingAPI struct {
+	ResourceSets []struct {
+		Resources []struct {
+			Point struct {
+				Coordinates []float64
+			}
+		}
+	}
+}
+
+type coordinates struct {
+	Name      string
+	Latitude  float64
+	Longitude float64
+}
+
 type artistsArray struct {
+	*artists
 	Array []artists
+	Valid []artists
+	index int
+	value int
+	flag  bool
 }
 
-type artistsPaginate struct {
-	Array []artists
-}
-
-type concerts struct {
-	Relation  ExtractRelation
-	Locations ExtractLocation
-	Dates     ExtractDate
-}
-
+var Maps ForBingAPI
+var coordinatesMap coordinates
 var artistsData artistsArray
-var concertsData concerts
 var extractDeezerId extractDeezer
+var concertsData ExtractRelation
+
 
 func Artists() {
 
@@ -98,46 +96,37 @@ func Artists() {
 	defer res.Body.Close()
 }
 
+func Map(location string) {
+	url := fmt.Sprintf("https://dev.virtualearth.net/REST/v1/Locations?q=%s&key=%s", location, "AlBlNdfGSHdDQO7QSc9vamIHHUD6c0VArZIZ9i3l-F9J4whlFM9Fz3ZMxE1t_lMh")
+	req, _ := http.NewRequest("GET", url, nil)
+	res, _ := http.DefaultClient.Do(req)
+	body, _ := ioutil.ReadAll(res.Body)
+	//fmt.Println(string(body))
+	err := json.Unmarshal([]byte(body), &Maps)
+	if err != nil {
+		fmt.Println("Error :", err)
+		return
+	}
+	defer res.Body.Close()
+}
+
 func Relation() {
 
 	url := "https://groupietrackers.herokuapp.com/api/relation"
-	req, _ := http.NewRequest("GET", url, nil)
-	res, _ := http.DefaultClient.Do(req)
-	body, _ := ioutil.ReadAll(res.Body)
-	//fmt.Println(string(body))
-	err := json.Unmarshal([]byte(body), &concertsData.Relation)
-
-	if err != nil {
-		fmt.Println("Error :", err)
-		return
+	req, errorRequest := http.NewRequest("GET", url, nil)
+	if errorRequest != nil {
+		log.Fatal(errorRequest)
 	}
-	defer res.Body.Close()
-}
-
-func Locations() {
-
-	url := "https://groupietrackers.herokuapp.com/api/locations"
-	req, _ := http.NewRequest("GET", url, nil)
-	res, _ := http.DefaultClient.Do(req)
-	body, _ := ioutil.ReadAll(res.Body)
-	//fmt.Println(string(body))
-	err := json.Unmarshal([]byte(body), &concertsData.Locations)
-
-	if err != nil {
-		fmt.Println("Error :", err)
-		return
+	res, errorServ := http.DefaultClient.Do(req)
+	if errorServ != nil {
+		log.Fatal(errorServ)
 	}
-	defer res.Body.Close()
-}
-
-func Dates() {
-
-	url := "https://groupietrackers.herokuapp.com/api/dates"
-	req, _ := http.NewRequest("GET", url, nil)
-	res, _ := http.DefaultClient.Do(req)
-	body, _ := ioutil.ReadAll(res.Body)
+	body, errorFich := ioutil.ReadAll(res.Body)
+	if errorFich != nil {
+		log.Fatal(errorFich)
+	}
 	//fmt.Println(string(body))
-	err := json.Unmarshal([]byte(body), &concertsData.Dates)
+	err := json.Unmarshal([]byte(body), &concertsData)
 
 	if err != nil {
 		fmt.Println("Error :", err)
@@ -149,64 +138,74 @@ func Dates() {
 func feedData() {
 	Artists()
 	Relation()
-	Locations()
-	Dates()
-	// RunSpotify()
 }
+
+func defineOrder(order string) {
+	if order == "creationDate" {
+		sort.Slice(artistsData.Array[:], func(i, j int) bool {
+			return artistsData.Array[i].CreationDate < artistsData.Array[j].CreationDate
+		})
+	} else if order == "id" {
+		sort.Slice(artistsData.Array[:], func(i, j int) bool {
+			return artistsData.Array[i].Id < artistsData.Array[j].Id
+		})
+	} else if order == "a-z" {
+		sort.Slice(artistsData.Array[:], func(i, j int) bool {
+			return artistsData.Array[i].Name < artistsData.Array[j].Name
+		})
+	} else if order == "z-a" {
+		sort.Slice(artistsData.Array[:], func(i, j int) bool {
+			return artistsData.Array[i].Name > artistsData.Array[j].Name
+		})
+	} else if order == "reverseCreationDate" {
+		sort.Slice(artistsData.Array[:], func(i, j int) bool {
+			return artistsData.Array[i].CreationDate > artistsData.Array[j].CreationDate
+		})
+	}
+}
+
+var artistsDataPaginate artistsArray
+
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
-	var indexString string
-	var indexRange int = 0
-	var artistsDataPaginate artistsPaginate
+	tri := r.FormValue("tri")
+	defineOrder(tri)
 	t, err := template.ParseFiles("./static/html/Home.html")
-	nbItems := r.FormValue("nb-items")
-	if nbItems != "" {
-		indexString = nbItems
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
-	index, _ := strconv.Atoi(indexString)
-	if indexRange < index {
-		indexRange = 0
-	} else {
-		indexRange -= index
-	}
-	if indexString == "" {
-		artistsDataPaginate.Array = artistsData.Array
-	} else {
-		for nbItem := 0; nbItem < index; nbItem++ {
-			if indexRange < len(artistsData.Array) {
-
-				artistsDataPaginate.Array = append(artistsDataPaginate.Array, artistsData.Array[indexRange])
-				indexRange++
+	page_begin := r.FormValue("Button")
+	page_Next := r.FormValue("NextButton")
+	page_Prev := r.FormValue("PrevButton")
+	if len(page_begin) > 0 || len(page_Next) > 0 || len(page_Prev) > 0 {
+		if page_begin == "afficher" {
+			nbItems := r.FormValue("nb-items")
+			First(nbItems)
+			artistsDataPaginate.flag = true
+			t.Execute(w, artistsDataPaginate)
+		} else if page_Next == "Suivant" {
+			if artistsDataPaginate.value != 52 && artistsDataPaginate.value != 0 {
+				Next()
+				t.Execute(w, artistsDataPaginate)
+			} else {
+				t.Execute(w, artistsData)
 			}
+			artistsDataPaginate.flag = true
+		} else if page_Prev == "Précedent" {
+			if artistsDataPaginate.value != 52 && artistsDataPaginate.value != 0 {
+				Prev()
+				t.Execute(w, artistsDataPaginate)
+			} else {
+				t.Execute(w, artistsData)
+			}
+			artistsDataPaginate.flag = false
 		}
+	} else {
+		t.Execute(w, artistsData)
 	}
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	t.Execute(w, artistsDataPaginate)
 }
 
-var currentIndex int = 0
-
-func handleNextButton(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("./static/html/Home.html")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	NextButton := r.FormValue("NextButton")
-	if NextButton != "" {
-		currentIndex++
-		if currentIndex >= len(artistsData.Array) {
-			currentIndex = 0
-		}
-	}
-
-	artistsDataPaginate := artistsPaginate{Array: artistsData.Array[currentIndex : currentIndex+10]}
-	t.Execute(w, artistsDataPaginate)
-}
 
 func deezer() {
 	url := fmt.Sprintf("https://api.deezer.com/search/artist/?q=%s&index=0&limit=2&output=json", artistsData.Array[index-1].Name)
@@ -224,50 +223,77 @@ func deezer() {
 	defer res.Body.Close()
 }
 
-func handlePrevButton(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("./static/html/Home.html")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+func First(nbItems string) {
+	artistsDataPaginate.value, _ = strconv.Atoi(nbItems)
+	artistsDataPaginate.Array = artistsData.Array[:artistsDataPaginate.value]
+	artistsDataPaginate.index = artistsDataPaginate.value
+}
 
-	PreviousButton := r.FormValue("PreviousButton")
-	if PreviousButton != "" {
-		currentIndex--
-		if currentIndex < 0 {
-			currentIndex = len(artistsData.Array) - 1
-		}
+func Next() {
+	if artistsDataPaginate.flag {
+		artistsDataPaginate.index += artistsDataPaginate.value
+	} else {
+		artistsDataPaginate.index += (artistsDataPaginate.value * 2)
 	}
+	if (artistsDataPaginate.index) < len(artistsData.Array) {
+		artistsDataPaginate.Array = artistsData.Array[(artistsDataPaginate.index - artistsDataPaginate.value):artistsDataPaginate.index]
+	} else {
+		artistsDataPaginate.index -= artistsDataPaginate.value
+		artistsDataPaginate.Array = artistsData.Array[artistsDataPaginate.index:]
+	}
+}
 
-	artistsDataPaginate := artistsPaginate{Array: artistsData.Array[currentIndex : currentIndex+10]}
-	t.Execute(w, artistsDataPaginate)
+func Prev() {
+	if !artistsDataPaginate.flag {
+		artistsDataPaginate.index -= artistsDataPaginate.value
+	} else {
+		artistsDataPaginate.index -= (artistsDataPaginate.value * 2)
+	}
+	if (artistsDataPaginate.index) > 0 {
+		artistsDataPaginate.Array = artistsData.Array[artistsDataPaginate.index:(artistsDataPaginate.index + artistsDataPaginate.value)]
+	} else {
+		artistsDataPaginate.index += artistsDataPaginate.value
+		artistsDataPaginate.Array = artistsData.Array[:artistsDataPaginate.value]
+	}
 }
 
 func searchHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("tu es dans la boucle")
+	artistsData.artists = &artistsData.Array[0]
 	indexString := r.FormValue("research")
-	fmt.Println(indexString)
-	t, err := template.ParseFiles("./static/html/Artist.html")
+	artistsData.Valid = []artists{}
+	artistsData.flag = false
+	t, err := template.ParseFiles("./static/html/research.html")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	for ind, value := range artistsData.Array {
-		if strings.ToLower(value.Name) == strings.ToLower(indexString) {
-			t.Execute(w, artistsData.Array[ind])
+	for _, value := range artistsData.Array {
+		val := strings.ToLower(value.Name)
+		str := strings.ToLower(indexString)
+		if strings.Contains(val, str) {
+			artistsData.Valid = append(artistsData.Valid, value)
+			artistsData.flag = true
 		}
 	}
+	t.Execute(w, artistsData)
 }
+
+var index int
 
 func concertHandler(w http.ResponseWriter, r *http.Request) {
 	var concertsDatesLocations rangeRelation
 	indexString := r.FormValue("dates")
-	index, _ := strconv.Atoi(indexString)
+	if indexString != "" {
+		index, _ = strconv.Atoi(indexString)
+	}
 	t, err := template.ParseFiles("./static/html/concert.html")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	for location, dates := range concertsData.Relation.Index[index-1].DatesLocations {
+	concertsDatesLocations.Name = string(artistsData.Array[index-1].Name)
+	for location, dates := range concertsData.Index[index-1].DatesLocations {
 		concertsDatesLocations.Location = append(concertsDatesLocations.Location, location)
 		concertsDatesLocations.Dates = append(concertsDatesLocations.Dates, dates)
 	}
@@ -275,19 +301,39 @@ func concertHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+
 var index int
+
+func mapHandler(w http.ResponseWriter, r *http.Request) {
+	location := r.FormValue("location")
+	Map(location)
+	t, err := template.ParseFiles("./static/html/Map.html")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	coordinatesMap.Name = string(artistsData.Array[index-1].Name)
+	coordinatesMap.Latitude = Maps.ResourceSets[0].Resources[0].Point.Coordinates[0]
+	coordinatesMap.Longitude = Maps.ResourceSets[0].Resources[0].Point.Coordinates[1]
+	t.Execute(w, coordinatesMap)
+}
 
 func artistHandler(w http.ResponseWriter, r *http.Request) {
 	indexString := r.FormValue("card")
-	index, _ = strconv.Atoi(indexString)
+	if indexString != "" {
+		index, _ = strconv.Atoi(indexString)
+	}
+	sort.Slice(artistsData.Array[:], func(i, j int) bool {
+		return artistsData.Array[i].Id < artistsData.Array[j].Id
+	})
 	t, err := template.ParseFiles("./static/html/Artist.html")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	deezer()
-	t.Execute(w, artistsData.Array[index-1])
 
+	t.Execute(w, artistsData.Array[index-1])
 }
 
 func main() {
@@ -295,12 +341,10 @@ func main() {
 	feedData()
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	http.HandleFunc("/", homeHandler)
-	http.HandleFunc("/next", handleNextButton)
-	http.HandleFunc("/prev", handlePrevButton)
 	http.HandleFunc("/artist", artistHandler)
 	http.HandleFunc("/search", searchHandler)
 	http.HandleFunc("/concert", concertHandler)
-	//http.HandleFunc("/testspotify", spotifyHandler)
+	http.HandleFunc("/map", mapHandler)
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}
