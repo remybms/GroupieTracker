@@ -30,7 +30,8 @@
 
    <div class ="container1">
 
-        <img class="img-groupe" src="{{.Image}}" alt="" />
+
+     <img class="img-groupe" src="{{.Image}}" alt="" />
 
         <div class="left">
             <div class="name"> 
@@ -64,7 +65,8 @@
         </div>
     </div>
     <div class ="container2">
-        
+        <iframe title="deezer-widget" src="https://widget.deezer.com/widget/dark/artist/{{.IdDeezer}}/top_tracks" width="100%" height="300" frameborder="0" allowtransparency="true" allow="encrypted-media; clipboard-write"></iframe>
+       
         <div class="Location">Informations suplémentaires
             <form action="concert" method="post"> 
                 <button type="submit" value="{{.Id}}" name="dates" class="home-left-block">

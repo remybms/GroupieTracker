@@ -22,11 +22,21 @@ type artists struct {
 	Location     string   `json:"location"`
 	ConcertDates string   `json:"concertDates"`
 	Relations    string   `json:"relations"`
+	IdDeezer     int
 }
 
 type relation struct {
 	Id             int
 	DatesLocations map[string][]string
+}
+
+
+type Deezer struct {
+	Id int
+}
+
+type extractDeezer struct {
+	Data []Deezer
 }
 
 type rangeRelation struct {
@@ -67,7 +77,9 @@ type artistsArray struct {
 var Maps ForBingAPI
 var coordinatesMap coordinates
 var artistsData artistsArray
+var extractDeezerId extractDeezer
 var concertsData ExtractRelation
+
 
 func Artists() {
 
@@ -77,7 +89,6 @@ func Artists() {
 	body, _ := ioutil.ReadAll(res.Body)
 	//fmt.Println(string(body))
 	err := json.Unmarshal([]byte(body), &artistsData.Array)
-
 	if err != nil {
 		fmt.Println("Error :", err)
 		return
@@ -155,6 +166,7 @@ func defineOrder(order string) {
 
 var artistsDataPaginate artistsArray
 
+
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	tri := r.FormValue("tri")
 	defineOrder(tri)
@@ -194,11 +206,29 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+
+func deezer() {
+	url := fmt.Sprintf("https://api.deezer.com/search/artist/?q=%s&index=0&limit=2&output=json", artistsData.Array[index-1].Name)
+	req, _ := http.NewRequest("GET", url, nil)
+	res, _ := http.DefaultClient.Do(req)
+	body, _ := ioutil.ReadAll(res.Body)
+	//fmt.Println(string(body))
+	err := json.Unmarshal([]byte(body), &extractDeezerId)
+	if err != nil {
+		fmt.Println("Error :", err)
+		return
+	}
+	artistsData.Array[index-1].IdDeezer = extractDeezerId.Data[0].Id
+	fmt.Println(artistsData.Array[index-1].IdDeezer)
+	defer res.Body.Close()
+}
+
 func First(nbItems string) {
 	artistsDataPaginate.value, _ = strconv.Atoi(nbItems)
 	artistsDataPaginate.Array = artistsData.Array[:artistsDataPaginate.value]
 	artistsDataPaginate.index = artistsDataPaginate.value
 }
+
 func Next() {
 	if artistsDataPaginate.flag {
 		artistsDataPaginate.index += artistsDataPaginate.value
@@ -271,6 +301,9 @@ func concertHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+
+var index int
+
 func mapHandler(w http.ResponseWriter, r *http.Request) {
 	location := r.FormValue("location")
 	Map(location)
@@ -298,6 +331,7 @@ func artistHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
+	deezer()
 
 	t.Execute(w, artistsData.Array[index-1])
 }
