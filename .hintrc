@@ -21,6 +21,8 @@
         "label": "off",
         "select-name": "off"
       }
-    ]
+    ],
+    "axe/language": "off",
+    "meta-viewport": "off"
   }
 }
