@@ -30,7 +30,6 @@ type relation struct {
 	DatesLocations map[string][]string
 }
 
-
 type Deezer struct {
 	Id int
 }
@@ -79,7 +78,6 @@ var coordinatesMap coordinates
 var artistsData artistsArray
 var extractDeezerId extractDeezer
 var concertsData ExtractRelation
-
 
 func Artists() {
 
@@ -166,7 +164,6 @@ func defineOrder(order string) {
 
 var artistsDataPaginate artistsArray
 
-
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	tri := r.FormValue("tri")
 	defineOrder(tri)
@@ -205,7 +202,6 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		t.Execute(w, artistsData)
 	}
 }
-
 
 func deezer() {
 	url := fmt.Sprintf("https://api.deezer.com/search/artist/?q=%s&index=0&limit=2&output=json", artistsData.Array[index-1].Name)
@@ -300,9 +296,6 @@ func concertHandler(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, concertsDatesLocations)
 
 }
-
-
-var index int
 
 func mapHandler(w http.ResponseWriter, r *http.Request) {
 	location := r.FormValue("location")
