@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"io/ioutil"
-	"log"
 	"net/http"
-	"net/url"
 	"strconv"
 	"strings"
 )
@@ -264,7 +262,7 @@ func artistHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // API Spotify//
-
+/*
 const (
 	clientID     = "b060eb29f3d44f388961e66fd7b55fa4"
 	clientSecret = "4bd35b387c0446aab01c3c4961c1439d"
@@ -446,10 +444,10 @@ func searchArtist(accessToken string, artistName string) (*SearchResponse, error
 
 	return &searchResult, nil
 }
-
+*/
 //API Spotify//
 
-func main() {
+/*func main() {
 	fmt.Println("http://localhost:8080")
 	feedData()
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
@@ -459,8 +457,8 @@ func main() {
 	http.HandleFunc("/artist", artistHandler)
 	http.HandleFunc("/search", searchHandler)
 	http.HandleFunc("/concert", concertHandler)
-	http.HandleFunc("/testspotify", spotifyHandler)
+	//http.HandleFunc("/testspotify", spotifyHandler)
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}
-}
+}*/

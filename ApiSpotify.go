@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 )
@@ -43,9 +44,13 @@ type SearchResponse struct {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	t, _ := template.ParseFiles("./testspotify.html")
-
-	authURL := fmt.Sprintf("https://accounts.spotify.com/authorize?client_id=%s&response_type=code&redirect_uri=%s&scope=user-read-private+user-read-email+playlist-read-private", clientID, redirectURI)
+	t, err := template.ParseFiles("./static/html/testspotify.html")
+	if err != nil {
+		return
+	}
+	code := r.URL.Query().Get("code")
+	token, _ := getAccessToken(code)
+	authURL := fmt.Sprintf("https://accounts.spotify.com/authorize?client_id=%s&response_type=%s&redirect_uri=http://localhost:8080/callback&scope=user-read-private+user-read-email+playlist-read-private", clientID, token)
 	http.Redirect(w, r, authURL, http.StatusFound)
 	t.Execute(w, http.StatusFound)
 }
@@ -189,4 +194,12 @@ func searchArtist(accessToken string, artistName string) (*SearchResponse, error
 	}
 
 	return &searchResponse, nil
+}
+func main() {
+	fmt.Println("http://localhost:8080")
+	http.HandleFunc("/", handler)
+	http.HandleFunc("/callback", callbackHandler)
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Fatal(err)
+	}
 }
