@@ -1,7 +1,7 @@
 # Groupie Tracker
 
 *** 
-Groupie tracker est un site web en local regroupent une liste d'artistes grâce a une Api gerer en Golang ,ce site web peut vous fournir des informations supplémentaires sur chaque artistes tels que :
+Groupie tracker est un site web en local regroupent une liste d'artistes grâce a une Api gerer en Golang, ce site web peut vous fournir des informations supplémentaires sur chaque artistes tels que :
 
 - Année de création 
 - Date du premier album 
@@ -15,3 +15,8 @@ Groupie tracker est un site web en local regroupent une liste d'artistes grâce 
 - git clone https://github.com/remybms/GroupieTracker
 - go run server.go 
 - Se rendre sur http://localhost:8080
+
+## Colaborateurs 
+-  Bamas Rémy
+- Naert Matthias
+- Favril Pierre-Alexis
