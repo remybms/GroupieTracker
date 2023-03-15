@@ -12,6 +12,6 @@ Groupie tracker est un site web en local listant une liste d'artistes grâce a u
 
 
 ## Installation
-git clone https://github.com/remybms/GroupieTracker
-go run server.go 
-Se rendre sur http://localhost:8080
+- git clone https://github.com/remybms/GroupieTracker
+- go run server.go 
+- Se rendre sur http://localhost:8080
