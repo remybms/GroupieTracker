@@ -1,12 +1,12 @@
 # Groupie Tracker
 
 *** 
-Groupie tracker est un site web en local regroupent une liste d'artistes grâce a une Api gerer en Golang, ce site web peut vous fournir des informations supplémentaires sur chaque artistes tels que :
+Groupie tracker est un site web en local regroupant une liste d'artistes grâce a une Api gérée en Golang, ce site web peut vous fournir des informations supplémentaires sur chaque artistes tels que :
 
 - Année de création 
 - Date du premier album 
 - Nom complet du ou des membres 
-- Prochains concerts prévu avec leurs localisations
+- Prochains concerts prévus avec leurs localisations
 - Des extraits de l'auteur (les plus connus)
 
 
@@ -23,7 +23,7 @@ A l'aide des boutons vous pouvez :
 - Rechercher un artiste en particulier grâce a la barre de recherche.
 
 En cliquant sur un artiste vous pouvez voir les informations supplémentaires sur celui-ci.
-Vous avez aussi un bouton informations supplémentaires auquel vous y trouverez les prochains concerts avec leur localisation.
+Vous avez aussi un bouton "informations supplémentaires" auquel vous y trouverez les prochains concerts avec leur localisation.
 
 ***
 
