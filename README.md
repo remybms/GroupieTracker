@@ -18,9 +18,10 @@ Groupie tracker est un site web en local regroupent une liste d'artistes grâce 
 
 ### Déroulement
 A l'aide des boutons vous pouvez :
-- trier les artistes par id, ordre alphabétique ou par date de création.
-- limiter le nombre d'artistes affiché et/ou 
-- rechercher un artiste en particulier grâce a la barre de recherche.
+- Trier les artistes par id, ordre alphabétique ou par date de création.
+- Limiter le nombre d'artistes affiché et/ou 
+- Rechercher un artiste en particulier grâce a la barre de recherche.
+
 En cliquant sur un artiste vous pouvez voir les informations supplémentaires sur celui-ci.
 Vous avez aussi un bouton informations supplémentaires auquel vous y trouverez les prochains concerts avec leur localisation.
 
