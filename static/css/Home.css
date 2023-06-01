@@ -24,7 +24,13 @@ img {
     align-self: center;
     /*margin-left: 10px;*/
   }
-
+#search-header{
+    margin-left: 15%;
+    border-radius: 5px;
+}
+a{
+    margin-left: 10%;
+}
 .h1-header {
     color: #fff;
     font-size: 150%;
