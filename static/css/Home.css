@@ -37,13 +37,13 @@ a{
     font-weight: 60px;
     text-align:left;
 }
-.NextButton{
-    margin-right: 10px;
-}
-.PrevButton ,.NextButton{
-    background-color: #fff;
-    padding: 0.5%;
+.PrevButton ,.NextButton,.page{
+    margin: 10px;
     border-radius: 10px;
+    padding: 1%;
+    background-color: #3F0579;
+    color: #fff;
+    border-color: #fff;
 }
 
 .header-right {
@@ -63,6 +63,7 @@ a {
 
 
 #search-header {
+    margin-left: 5%;
     width: 100%;
     max-width: 250px;
     height: 30px;
